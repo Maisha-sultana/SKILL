@@ -1,0 +1,28 @@
+/* src/index.css বা src/App.css */
+@import "tailwindcss";
+/* Tailwind CSS directives */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global Styles */
+body {
+  margin: 0; /* গ্লোবাল মার্জিন রিমুভ করুন */
+  padding: 0; /* গ্লোবাল প্যাডিং রিমুভ করুন */
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  max-width: none; /* App.jsx এ min-h-screen ব্যবহার করায় রুট কনটেইনারের max-width দরকার নেই */
+  margin: 0;
+  padding: 0;
+  text-align: left; /* কন্টেন্ট বাম দিক থেকে শুরু করার জন্য */
+}
+
+h1 {
+  font-size: 3em; /* h1 এর সাইজ একটু বড় করা হলো */
+  font-weight: 700;
+  color: #fff;
+}
