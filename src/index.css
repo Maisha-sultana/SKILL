@@ -1,8 +1,6 @@
 /* src/index.css বা src/App.css */
 @import "tailwindcss";
-/* Tailwind CSS directives */
-@tailwind base;
-@tailwind components;
+
 @tailwind utilities;
 
 /* Global Styles */
