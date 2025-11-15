@@ -62,10 +62,10 @@ const Home = () => {
                 </h1>
             </header>
             
-            <div className="shadow-2xl rounded-xl overflow-hidden border border-rose-300 mb-12">
+         <div className="shadow-2xl rounded-xl overflow-hidden  mb-12">
                 <Swiper
                     slidesPerView={1.5}
-                    spaceBetween={15}
+                    spaceBetween={10}
                     loop={true}
                     freeMode={true} 
                     speed={4000} // Continuous movement speed
@@ -82,22 +82,26 @@ const Home = () => {
                     }}
                 >
                     {/* Map data twice for a better seamless loop */}
+                    {/* থেকে ডেটা ব্যবহার করা হচ্ছে */}
                     {[...skills, ...skills].map((skill, index) => (
                         <SwiperSlide key={`${skill.skillId}-${index}`} className="flex items-center">
                             {/* Card with Image and Hover Transition */}
                             <div className="group relative w-full h-full rounded-lg overflow-hidden shadow-lg transform transition duration-500 hover:scale-[1.05] hover:shadow-rose-500/50">
                                 
-                                {/* Image */}
+                                {/* Image (skill.image) */}
                                 <img 
                                     src={skill.image} 
                                     alt={skill.skillName} 
                                     className="w-full h-full object-cover transition duration-500 transform group-hover:scale-110"
+                                    // যদি ছবি লোড না হয়, তবে Placeholder দেখাবে
                                     onError={(e) => { e.target.onerror = null; e.target.src = "https://via.placeholder.com/600x400?text="+skill.category; }}
                                 />
                                 
-                                {/* Overlay Text */}
-                                <div className="absolute inset-0 bg-black bg-opacity-40 flex items-end p-4 transition duration-300 group-hover:bg-opacity-70">
+                                {/* Text Container with Bottom Gradient for contrast */}
+                                {/* Black overlay removed. Added soft gradient from bottom (black/70) for text visibility. */}
+                                <div className="absolute inset-0 flex items-end p-4 bg-gradient-to-t from-black/70 via-black/20 to-transparent transition duration-300">
                                     <h3 className="text-xl font-bold text-white leading-tight">
+                                        {/* skill.skillName এখানে দেখাচ্ছে */}
                                         {skill.skillName}
                                     </h3>
                                 </div>
@@ -107,12 +111,18 @@ const Home = () => {
                     ))}
                 </Swiper>
             </div>
-            
             {/* ======================================================= */}
             {/* 2. POPULAR SKILLS SECTION (Cards) */}
             {/* ======================================================= */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 className="text-4xl font-bold text-gray-800 mb-10 text-center">Popular Skills</h2>
+               <h1 className="text-3xl md:text-xl font-extrabold tracking-tight text-center pb-6">
+                    <span 
+                        // Gradient: Rose to Pink-Purple
+                        className="bg-clip-text text-transparent bg-gradient-to-r from-rose-700 to-pink-500 transition duration-500"
+                    >
+                        Popular Skills
+                    </span>
+                </h1>
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                     {skills.map(skill => (
