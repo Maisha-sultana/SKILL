@@ -1,19 +1,18 @@
 // src/components/Footer.jsx
 
 import React from 'react';
-// প্রয়োজনীয় আইকন ইমপোর্ট করা হয়েছে
 import { Mail, Phone, MapPin, Facebook, Twitter, Linkedin, Youtube } from 'lucide-react';
 
 const Footer = () => {
   return (
-    // Fixed Bottom and light pink theme applied (bg-rose-200, text-gray-800)
-    <footer className="fixed bottom-0 left-0 right-0 z-40 bg-rose-200 border-t border-rose-300 shadow-lg p-4 md:p-6 lg:p-8 text-gray-800 h-[140px] md:h-[150px] transition-transform duration-500 ease-in-out">
+    // Removed fixed bottom-0, h-[...] classes. Added w-full and mt-auto.
+    <footer className="w-full mt-auto bg-rose-200 border-t border-rose-300 shadow-lg p-4 md:p-6 lg:p-8 text-gray-800 transition duration-300 ease-in-out hover:shadow-2xl hover:border-rose-500">
       <div className="max-w-7xl mx-auto"> 
         
         {/* Footer Content Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
           
-          {/* 1. Contact Info (Required) */}
+          {/* 1. Contact Info */}
           <div className="col-span-2 md:col-span-1">
             <h3 className="text-base font-semibold mb-2 text-rose-700">Contact</h3>
             <ul className="space-y-1 text-gray-700">
@@ -32,7 +31,7 @@ const Footer = () => {
             </ul>
           </div>
           
-          {/* 2. Legal & Policy (Required) */}
+          {/* 2. Legal & Policy */}
           <div className="col-span-2 md:col-span-1">
             <h3 className="text-base font-semibold mb-2 text-rose-700">Legal & Policy</h3>
             <ul className="space-y-1 text-gray-700">
@@ -42,7 +41,7 @@ const Footer = () => {
             </ul>
           </div>
           
-          {/* 3. Quick Links (Utility) */}
+          {/* 3. Quick Links */}
           <div className="hidden md:block col-span-1">
             <h3 className="text-base font-semibold mb-2 text-rose-700">Quick Links</h3>
             <ul className="space-y-1 text-gray-700">
@@ -52,11 +51,10 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* 4. Social Links (Required) */}
+          {/* 4. Social Links */}
           <div className="col-span-2 md:col-span-1">
             <h3 className="text-base font-semibold mb-2 text-rose-700">Follow Us</h3>
             <div className="flex space-x-4">
-              {/* Added Scale-on-hover effect for flair and pink hover color */}
               <a href="https://facebook.com/SkillSwapBD" target="_blank" rel="noopener noreferrer" className="text-gray-700 hover:text-rose-600 transition duration-300 transform hover:scale-110">
                 <Facebook className="w-6 h-6" />
               </a>
@@ -66,7 +64,6 @@ const Footer = () => {
               <a href="https://linkedin.com/company/SkillSwap" target="_blank" rel="noopener noreferrer" className="text-gray-700 hover:text-rose-600 transition duration-300 transform hover:scale-110">
                 <Linkedin className="w-6 h-6" />
               </a>
-              {/* YouTube Link Added with red hover color */}
               <a href="https://youtube.com/@SkillSwap" target="_blank" rel="noopener noreferrer" className="text-gray-700 hover:text-red-500 transition duration-300 transform hover:scale-110">
                 <Youtube className="w-6 h-6" />
               </a>

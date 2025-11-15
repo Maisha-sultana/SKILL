@@ -1,62 +1,47 @@
-// src/components/Navbar.jsx
+// src/components/Navbar.jsx (Based on the last successful structure, but non-fixed)
 
 import React, { useState } from 'react';
-// প্রয়োজনীয় আইকন ইমপোর্ট করা হয়েছে
-import { LogIn, User, Menu, X, Home, LogOut, UserCircle } from 'lucide-react'; 
+import { LogIn, User, Menu, X, Home, Info, Mail, LogOut, UserCircle } from 'lucide-react'; 
 
-// --- DUMMY DATA/STATE FOR DEMO (Replace with real props from App.jsx) ---
-// const Navbar = ({ isLoggedIn, user, onLogout }) => {
-const Navbar = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(true); // true/false করে টেস্ট করুন
+// DUMMY PROPS FOR DEMO (Since App.jsx no longer handles auth state logic)
+const Navbar = ({ isLoggedIn = false, user = null, onLogout = () => {} }) => {
+  
+  const [isInternalLoggedIn, setIsInternalLoggedIn] = useState(isLoggedIn);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isProfileHovered, setIsProfileHovered] = useState(false); // Hover state for profile menu
+  const [isProfileHovered, setIsProfileHovered] = useState(false); 
 
-  // Mock user data (for when isLoggedIn is true)
-  const user = {
-    displayName: 'Ayesha Khatun',
-    photoURL: 'https://i.pravatar.cc/150?img=1', // Placeholder avatar URL
-  };
+  const effectiveUser = user || { displayName: 'User', photoURL: 'https://i.pravatar.cc/150?img=1' };
   
   const logoText = "SkillSwap"; 
 
-  // Dummy Logout function
   const handleLogout = () => {
-    console.log("Logging out...");
-    setIsLoggedIn(false); // Set to false on logout
+    setIsInternalLoggedIn(false);
+    onLogout(); 
   };
   
-  // Dummy Login/Signup click
-  const handleAuthClick = (path) => {
-    console.log(`Navigating to ${path}`);
-    // In a real app, you would use navigate(path) here
-    if (path === '/login') setIsLoggedIn(true); // Simulate login
-  };
-// ------------------------------------------------------------------------
-
-  // Avatar Component with hover logic
   const UserProfileAvatar = () => (
     <div 
       className="relative flex items-center h-full transition duration-300"
       onMouseEnter={() => setIsProfileHovered(true)}
       onMouseLeave={() => setIsProfileHovered(false)}
     >
-      {/* 1. Avatar Image/Icon */}
-      {user.photoURL ? (
-        <img 
-          className="h-9 w-9 rounded-full object-cover border-2 border-rose-500 transition duration-300 transform hover:scale-110" 
-          src={user.photoURL} 
-          alt={user.displayName}
-          title={user.displayName} // Tooltip on hover
-        />
-      ) : (
-        <UserCircle className="h-9 w-9 text-rose-500 transition duration-300 transform hover:scale-110" title={user.displayName} />
-      )}
+      <a href="/profile">
+        {effectiveUser.photoURL ? (
+          <img 
+            className="h-9 w-9 rounded-full object-cover border-2 border-rose-500 transition duration-300 transform hover:scale-110 cursor-pointer" 
+            src={effectiveUser.photoURL} 
+            alt={effectiveUser.displayName}
+            title={`Go to Profile: ${effectiveUser.displayName}`} 
+          />
+        ) : (
+          <UserCircle className="h-9 w-9 text-rose-500 transition duration-300 transform hover:scale-110 cursor-pointer" title={`Go to Profile: ${effectiveUser.displayName}`} />
+        )}
+      </a>
 
-      {/* 2. Display Name Tooltip/Menu (on hover) */}
       {isProfileHovered && (
         <div className="absolute top-full right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-1 z-50 border border-rose-200 transition duration-300 transform translate-y-0 opacity-100">
           <div className="px-4 py-2 text-sm text-gray-700 font-semibold border-b border-rose-100">
-            {user.displayName}
+            {effectiveUser.displayName}
           </div>
           <button
             onClick={handleLogout}
@@ -71,8 +56,8 @@ const Navbar = () => {
 
 
   return (
-    // Fixed Navbar, White background, Rose accents (Fixed: top-0, z-50)
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white shadow-md border-b border-rose-200 transition duration-300">
+    // Removed 'fixed top-0 left-0 right-0 z-50'. Now uses w-full.
+    <nav className="w-full bg-white shadow-md border-b border-rose-200 transition duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           
@@ -84,49 +69,49 @@ const Navbar = () => {
           </div>
 
           {/* ২. নেভিগেশন লিঙ্কস (মাঝখানে - Center) */}
-          <div className="hidden sm:flex flex-grow justify-center space-x-4 transition duration-300">
+          <div className="hidden sm:flex flex-grow justify-center space-x-2 md:space-x-4 transition duration-300">
             
-            {/* Home Link */}
-            <a 
-              href="/home" 
-              className="text-gray-800 hover:bg-rose-100 hover:text-rose-600 px-3 py-2 rounded-md text-sm font-medium flex items-center transition duration-300"
-            >
+            <a href="/home" className="text-gray-800 hover:bg-rose-100 hover:text-rose-600 px-3 py-2 rounded-md text-sm font-medium flex items-center transition duration-300">
               <Home className="w-4 h-4 mr-1 transition duration-300" /> Home
             </a>
             
-            {/* My Profile Link (Always Visible as per requirement, but path may be protected) */}
-            <a 
-              href="/profile" 
-              className="text-gray-800 hover:bg-rose-100 hover:text-rose-600 px-3 py-2 rounded-md text-sm font-medium flex items-center transition duration-300"
-            >
-              <User className="w-4 h-4 mr-1 transition duration-300" /> My Profile
+            <a href="/about" className="text-gray-800 hover:bg-rose-100 hover:text-rose-600 px-3 py-2 rounded-md text-sm font-medium flex items-center transition duration-300">
+              <Info className="w-4 h-4 mr-1 transition duration-300" /> About
             </a>
-            
+
+            <a href="/contact" className="text-gray-800 hover:bg-rose-100 hover:text-rose-600 px-3 py-2 rounded-md text-sm font-medium flex items-center transition duration-300">
+              <Mail className="w-4 h-4 mr-1 transition duration-300" /> Contact
+            </a>
           </div>
             
-          {/* ৩. Auth/Profile Section (ডানদিকে - Right) */}
+          {/* ৩. Auth/Profile Section (ডানদিকে - Right Corner) */}
           <div className="hidden sm:flex flex-shrink-0 items-center space-x-3 transition duration-300">
             
-            {isLoggedIn && user ? (
+            {isInternalLoggedIn ? (
               <>
-                {/* Logged In View: Avatar (with name on hover) + Logout Button */}
+                <a 
+                    href="/profile" 
+                    className="flex items-center text-rose-600 hover:text-white hover:bg-rose-500 font-semibold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 active:scale-95 border border-rose-500"
+                >
+                    <User className="w-5 h-5 mr-2 transition duration-300" /> My Profile
+                </a>
+                
                 <UserProfileAvatar />
               </>
             ) : (
               <>
-                {/* Logged Out View: Login & Signup Buttons */}
-                <button 
-                  onClick={() => handleAuthClick('/login')}
+                <a
+                  href="/login"
                   className="flex items-center text-rose-600 hover:text-white hover:bg-rose-500 font-semibold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 active:scale-95 border border-rose-500"
                 >
                   <LogIn className="w-5 h-5 mr-2 transition duration-300" /> Login
-                </button>
-                <button 
-                  onClick={() => handleAuthClick('/signup')}
+                </a>
+                <a
+                  href="/signup"
                   className="flex items-center bg-rose-500 hover:bg-rose-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105 active:scale-95"
                 >
                   Signup
-                </button>
+                </a>
               </>
             )}
 
@@ -154,44 +139,36 @@ const Navbar = () => {
       {isMenuOpen && (
         <div className="sm:hidden bg-white border-t border-rose-200 transition duration-300" id="mobile-menu">
           <div className="px-2 pt-2 pb-3 space-y-1">
-             <a 
-                href="/home" 
-                className="text-gray-800 hover:bg-rose-100 hover:text-rose-600 block px-3 py-2 rounded-md text-base font-medium flex items-center transition duration-300"
-              >
+             <a href="/home" className="text-gray-800 hover:bg-rose-100 hover:text-rose-600 block px-3 py-2 rounded-md text-base font-medium flex items-center transition duration-300">
                 <Home className="w-4 h-4 mr-2" /> Home
               </a>
-              <a 
-                href="/profile" 
-                className="text-gray-800 hover:bg-rose-100 hover:text-rose-600 block px-3 py-2 rounded-md text-base font-medium flex items-center transition duration-300"
-              >
-                <User className="w-4 h-4 mr-2" /> My Profile
+              <a href="/about" className="text-gray-800 hover:bg-rose-100 hover:text-rose-600 block px-3 py-2 rounded-md text-base font-medium flex items-center transition duration-300">
+                <Info className="w-4 h-4 mr-2" /> About
               </a>
-
-              {/* Mobile Auth Buttons */}
-              {isLoggedIn ? (
-                  <button 
-                      onClick={handleLogout}
-                      className="w-full text-left flex items-center bg-rose-500 hover:bg-rose-600 text-white font-semibold py-2 px-3 rounded-md transition duration-300 ease-in-out"
-                  >
-                      <LogOut className="w-5 h-5 mr-2" /> Logout
-                  </button>
-              ) : (
+              <a href="/contact" className="text-gray-800 hover:bg-rose-100 hover:text-rose-600 block px-3 py-2 rounded-md text-base font-medium flex items-center transition duration-300">
+                <Mail className="w-4 h-4 mr-2" /> Contact
+              </a>
+              
+              {/* Auth Buttons/Links for Mobile View */}
+              {isInternalLoggedIn ? (
                   <>
-                      <button 
-                          onClick={() => handleAuthClick('/login')}
-                          className="w-full text-left flex items-center text-rose-600 hover:text-white hover:bg-rose-500 font-semibold py-2 px-3 rounded-md transition duration-300 ease-in-out border border-rose-500"
-                      >
-                          <LogIn className="w-5 h-5 mr-2" /> Login
-                      </button>
-                      <button 
-                          onClick={() => handleAuthClick('/signup')}
-                          className="w-full text-left flex items-center bg-rose-500 hover:bg-rose-600 text-white font-semibold py-2 px-3 rounded-md transition duration-300 ease-in-out"
-                      >
-                          Signup
+                      <a href="/profile" className="text-gray-800 hover:bg-rose-100 hover:text-rose-600 block px-3 py-2 rounded-md text-base font-medium flex items-center transition duration-300">
+                          <User className="w-4 h-4 mr-2" /> My Profile
+                      </a>
+                      <button onClick={handleLogout} className="w-full text-left flex items-center bg-rose-500 hover:bg-rose-600 text-white font-semibold py-2 px-3 rounded-md transition duration-300 ease-in-out">
+                          <LogOut className="w-5 h-5 mr-2" /> Logout
                       </button>
                   </>
+              ) : (
+                  <>
+                      <a href="/login" className="w-full text-left flex items-center text-rose-600 hover:text-white hover:bg-rose-500 font-semibold py-2 px-3 rounded-md transition duration-300 ease-in-out border border-rose-500">
+                          <LogIn className="w-5 h-5 mr-2" /> Login
+                      </a>
+                      <a href="/signup" className="w-full text-left flex items-center bg-rose-500 hover:bg-rose-600 text-white font-semibold py-2 px-3 rounded-md transition duration-300 ease-in-out">
+                          Signup
+                      </a>
+                  </>
               )}
-
           </div>
         </div>
       )}

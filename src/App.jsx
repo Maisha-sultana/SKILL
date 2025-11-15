@@ -1,27 +1,54 @@
 // src/App.jsx
 
-import './App.css'
-import Footer from './components/Footer'
-import Navbar from './components/Navbar'
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; 
+import './App.css'; 
+
+// Components (Lazy loading for better performance)
+const Navbar = React.lazy(() => import('./components/Navbar'));
+const Footer = React.lazy(() => import('./components/Footer'));
+const Home = React.lazy(() => import('./pages/Home')); 
+
+// Dummy Pages for routing links
+const Login = () => <h2 className="text-3xl text-rose-700 py-20 text-center">Login Page Content</h2>;
+const Profile = () => <h2 className="text-3xl text-rose-700 py-20 text-center">Profile Page Content</h2>;
+const Signup = () => <h2 className="text-3xl text-rose-700 py-20 text-center">Signup Page Content</h2>;
+const About = () => <h2 className="text-3xl text-rose-700 py-20 text-center">About Page Content</h2>;
+const Contact = () => <h2 className="text-3xl text-rose-700 py-20 text-center">Contact Page Content</h2>;
+
 
 function App() {
-
+  
   return (
-    // মূল কন্টেইনারের ব্যাকগ্রাউন্ড হালকা গোলাপী (rose-50) এবং টেক্সট কালার গাঢ় ধূসর (text-gray-800) করা হয়েছে।
-    // fixed Navbar এবং Footer-এর জন্য pt-16 এবং pb-[160px] বজায় রাখা হয়েছে।
-    <div className="min-h-screen pt-16 pb-[160px] md:pb-[170px] bg-rose-50 text-gray-800"> 
-      <Navbar/>
-      {/* Main Content Area */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center">
-        <h1>Vite + React</h1>
-        {/* প্রধান টেক্সটে গোলাপী অ্যাকসেন্ট যোগ করা হয়েছে */}
-        <p className="text-xl text-rose-600 mt-4"> 
-          আপনার প্রধান কন্টেন্ট এখানে যাবে।
-        </p>
-      </main>
-      <Footer/>
-    </div>
-  )
+    <Router>
+        <React.Suspense fallback={<div className="text-center py-20 text-xl text-rose-600">Loading App...</div>}>
+            
+            {/* Removed fixed padding. Added flex-col min-h-screen for sticky footer. */}
+            <div className="flex flex-col min-h-screen bg-rose-50 text-gray-800"> 
+                
+                {/* Navbar (Now Static/Relative) */}
+                <Navbar />
+                
+                {/* Main Content Area: flex-grow ensures it fills available space */}
+                <main className="flex-grow">
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/home" element={<Home />} />
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/signup" element={<Signup />} />
+                        <Route path="/profile" element={<Profile />} />
+                        <Route path="/about" element={<About />} />
+                        <Route path="/contact" element={<Contact />} />
+                    </Routes>
+                </main>
+
+                {/* Footer (Now Static/Relative) */}
+                <Footer/>
+            </div>
+
+        </React.Suspense>
+    </Router>
+  );
 }
 
 export default App;
