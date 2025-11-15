@@ -7,11 +7,32 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/free-mode';
 import 'swiper/css/autoplay';
-// Swiper Modules
-import { Autoplay, FreeMode } from 'swiper/modules';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
+// Swiper Modules (Pagination and Navigation added)
+import { Autoplay, FreeMode, Pagination, Navigation } from 'swiper/modules';
 
 // Lucide-react icons for visual flair
-import { Star, DollarSign, Eye } from 'lucide-react';
+import { Star, DollarSign, Eye, Users, Search, Calendar, CheckCircle } from 'lucide-react';
+
+// --- STATIC DATA: Top Rated Providers ---
+const topProviderData = [
+    { id: 1, name: 'Nadia Akhter', skill: 'Advanced React Dev', rating: 4.9, reviews: 150, avatar: 'https://i.pravatar.cc/150?img=47' },
+    { id: 2, name: 'Imran Khan', skill: 'Photo Editing', rating: 4.7, reviews: 112, avatar: 'https://i.pravatar.cc/150?img=68' },
+    { id: 3, name: 'Alex Martin', skill: 'Acoustic Guitar', rating: 4.8, reviews: 95, avatar: 'https://i.pravatar.cc/150?img=50' },
+    { id: 4, name: 'Rina Begum', skill: 'Bengali Cooking', rating: 5.0, reviews: 205, avatar: 'https://i.pravatar.cc/150?img=70' },
+    // More data for carousel
+    { id: 5, name: 'Tariq Mahmud', skill: 'Digital Marketing', rating: 4.6, reviews: 88, avatar: 'https://i.pravatar.cc/150?img=33' },
+    { id: 6, name: 'Zahid Islam', skill: 'Python Programming', rating: 4.4, reviews: 130, avatar: 'https://i.pravatar.cc/150?img=11' },
+];
+
+// --- STATIC DATA: How It Works Steps ---
+const howItWorksSteps = [
+    { id: 1, title: 'Discover Your Need', description: 'Search our library for the specific skill you need to master or exchange a service for.', icon: Search },
+    { id: 2, title: 'Connect & Schedule', description: 'Match with a verified provider or peer and schedule your session instantly.', icon: Calendar },
+    { id: 3, title: 'Swap Knowledge', description: 'Attend the session, master the skill, and leave a rating for the successful exchange!', icon: CheckCircle },
+];
+
 
 const Home = () => {
     const [skills, setSkills] = useState([]);
@@ -49,12 +70,12 @@ const Home = () => {
         <div className="py-0 md:py-4">
             
             {/* ======================================================= */}
-            {/* 1. HERO SLIDER SECTION (Image Carousel - Continuous & Hover) */}
+            {/* 1. HERO SLIDER SECTION (Title & Image Carousel) */}
             {/* ======================================================= */}
-            <header className="mb-8 pt-4 md:pt-8">
-                <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-center pb-6">
+            <header className="mb-12 pt-4 md:pt-8">
+                {/* Explore Title with Funky Font & Gradient */}
+                <h1 className="text-5xl md:text-7xl font-extrabold text-center pb-6 font-serif">
                     <span 
-                        // Gradient: Rose to Pink-Purple
                         className="bg-clip-text text-transparent bg-gradient-to-r from-rose-700 to-pink-500 transition duration-500"
                     >
                         Explore Top Skills & Knowledge
@@ -62,13 +83,14 @@ const Home = () => {
                 </h1>
             </header>
             
-         <div className="shadow-2xl rounded-xl overflow-hidden  mb-12">
+            {/* Swiper Container */}
+            <div className="shadow-2xl rounded-xl overflow-hidden border border-rose-300 mb-20">
                 <Swiper
                     slidesPerView={1.5}
-                    spaceBetween={10}
+                    spaceBetween={15}
                     loop={true}
                     freeMode={true} 
-                    speed={4000} // Continuous movement speed
+                    speed={4000}
                     autoplay={{
                         delay: 0,
                         disableOnInteraction: false,
@@ -81,27 +103,20 @@ const Home = () => {
                         1024: { slidesPerView: 4.5, spaceBetween: 25 },
                     }}
                 >
-                    {/* Map data twice for a better seamless loop */}
-                    {/* থেকে ডেটা ব্যবহার করা হচ্ছে */}
                     {[...skills, ...skills].map((skill, index) => (
                         <SwiperSlide key={`${skill.skillId}-${index}`} className="flex items-center">
-                            {/* Card with Image and Hover Transition */}
                             <div className="group relative w-full h-full rounded-lg overflow-hidden shadow-lg transform transition duration-500 hover:scale-[1.05] hover:shadow-rose-500/50">
                                 
-                                {/* Image (skill.image) */}
                                 <img 
                                     src={skill.image} 
                                     alt={skill.skillName} 
                                     className="w-full h-full object-cover transition duration-500 transform group-hover:scale-110"
-                                    // যদি ছবি লোড না হয়, তবে Placeholder দেখাবে
                                     onError={(e) => { e.target.onerror = null; e.target.src = "https://via.placeholder.com/600x400?text="+skill.category; }}
                                 />
                                 
                                 {/* Text Container with Bottom Gradient for contrast */}
-                                {/* Black overlay removed. Added soft gradient from bottom (black/70) for text visibility. */}
                                 <div className="absolute inset-0 flex items-end p-4 bg-gradient-to-t from-black/70 via-black/20 to-transparent transition duration-300">
                                     <h3 className="text-xl font-bold text-white leading-tight">
-                                        {/* skill.skillName এখানে দেখাচ্ছে */}
                                         {skill.skillName}
                                     </h3>
                                 </div>
@@ -111,18 +126,17 @@ const Home = () => {
                     ))}
                 </Swiper>
             </div>
+            
             {/* ======================================================= */}
             {/* 2. POPULAR SKILLS SECTION (Cards) */}
             {/* ======================================================= */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-               <h1 className="text-3xl md:text-xl font-extrabold tracking-tight text-center pb-6">
-                    <span 
-                        // Gradient: Rose to Pink-Purple
-                        className="bg-clip-text text-transparent bg-gradient-to-r from-rose-700 to-pink-500 transition duration-500"
-                    >
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+                {/* Popular Skills Title with Gradient */}
+                <h2 className="text-4xl md:text-5xl font-extrabold mb-12 text-center font-serif drop-shadow-lg">
+                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-rose-700 to-pink-500 transition duration-500">
                         Popular Skills
                     </span>
-                </h1>
+                </h2>
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                     {skills.map(skill => (
@@ -164,10 +178,89 @@ const Home = () => {
                         </div>
                     ))}
                 </div>
-                
-                {/* Spacer for bottom */}
-                <div className="h-10"></div> 
             </div>
+
+            {/* ======================================================= */}
+            {/* 3. TOP RATED PROVIDERS SECTION (SWIPER CAROUSEL) */}
+            {/* ======================================================= */}
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+                <h2 className="text-4xl md:text-5xl font-extrabold mb-12 text-center font-serif drop-shadow-lg">
+                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-rose-700 transition duration-500">
+                        Top Rated Providers
+                    </span>
+                </h2>
+                
+                {/* Provider Swiper Wrapper */}
+                <div className="provider-swiper-container pb-12">
+                    <Swiper
+                        slidesPerView={1}
+                        spaceBetween={20}
+                        pagination={{ clickable: true }}
+                        navigation={true}
+                        modules={[Pagination, Navigation]}
+                        className="mySwiper h-auto"
+                        breakpoints={{
+                            640: { slidesPerView: 2, spaceBetween: 30 },
+                            1024: { slidesPerView: 3, spaceBetween: 40 },
+                            1280: { slidesPerView: 4, spaceBetween: 40 },
+                        }}
+                    >
+                        {topProviderData.map(provider => (
+                            <SwiperSlide key={provider.id}>
+                                {/* Provider Card Design */}
+                                <div className="bg-white p-6 rounded-xl shadow-lg border-2 border-rose-100 text-center transform hover:shadow-xl hover:border-rose-400 transition duration-500 hover:-translate-y-1">
+                                    <img 
+                                        src={provider.avatar} 
+                                        alt={provider.name} 
+                                        className="w-24 h-24 rounded-full mx-auto object-cover mb-4 border-4 border-rose-300 transition duration-300 transform hover:scale-105"
+                                    />
+                                    <h3 className="text-xl font-bold text-gray-900 truncate">{provider.name}</h3>
+                                    <p className="text-sm text-rose-600 font-semibold mb-2">{provider.skill}</p>
+                                    <div className="flex justify-center items-center text-sm text-gray-600">
+                                        <Star className="w-4 h-4 mr-1 text-amber-500 fill-current" />
+                                        <span>{provider.rating} ({provider.reviews} Reviews)</span>
+                                    </div>
+                                    <button className="mt-4 bg-rose-500 text-white py-1 px-4 rounded-full text-sm hover:bg-rose-600 transition duration-300 transform hover:scale-105">
+                                        View Profile
+                                    </button>
+                                </div>
+                            </SwiperSlide>
+                        ))}
+                    </Swiper>
+                </div>
+            </div>
+
+            {/* ======================================================= */}
+            {/* 4. HOW IT WORKS SECTION (WITH STRONGER SKEW EFFECT) */}
+            {/* ======================================================= */}
+            {/* Changed background from rose-100/50 to solid rose-200 and increased skew-y to 2 */}
+            <div className="max-w-full bg-rose-200 py-20 transform skew-y-2 border-y-4 border-rose-300 shadow-inner">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 transform -skew-y-2">
+                    <h2 className="text-4xl md:text-5xl font-extrabold mb-16 text-center font-serif drop-shadow-lg">
+                        <span className="bg-clip-text text-transparent bg-gradient-to-r from-rose-700 to-pink-500 transition duration-500">
+                            How It Works
+                        </span>
+                    </h2>
+                    
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+                        {howItWorksSteps.map(step => {
+                            const Icon = step.icon; // Get the Lucide icon component
+                            return (
+                                <div key={step.id} className="text-center p-8 bg-white rounded-xl shadow-2xl border-2 border-rose-300 transform transition duration-500 hover:scale-[1.02]">
+                                    <div className="group mx-auto w-16 h-16 mb-4 flex items-center justify-center rounded-full bg-rose-600 text-white shadow-xl transition duration-300 transform hover:rotate-6">
+                                        <Icon className="w-8 h-8"/>
+                                    </div>
+                                    <h3 className="text-2xl font-bold text-gray-900 mb-3">{step.id}. {step.title}</h3>
+                                    <p className="text-gray-600">{step.description}</p>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
+            </div>
+            
+            {/* Spacer for bottom */}
+            <div className="h-10"></div> 
             
         </div>
     );
