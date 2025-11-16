@@ -1,4 +1,4 @@
-// src/components/Navbar.jsx (Updated)
+// src/components/Navbar.jsx (Updated to use Profile Dropdown)
 
 import React, { useState } from 'react';
 import { LogIn, User, Menu, X, Home, Info, Mail, LogOut, UserCircle } from 'lucide-react'; 
@@ -6,10 +6,10 @@ import { LogIn, User, Menu, X, Home, Info, Mail, LogOut, UserCircle } from 'luci
 // 🎯 FIX: Rely entirely on props (isLoggedIn, user, onLogout)
 const Navbar = ({ isLoggedIn = false, user = null, onLogout = () => {} }) => {
   
-  // isLoggedIn prop is used directly now
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  // 🎯 New State: Controls the profile dropdown visibility
+  const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false); 
   
-  // Use props for user info, providing a fallback if null
   const effectiveUser = user || { displayName: 'User', photoURL: 'https://i.pravatar.cc/150?img=1' };
   
   const logoText = "SkillSwap"; 
@@ -17,25 +17,50 @@ const Navbar = ({ isLoggedIn = false, user = null, onLogout = () => {} }) => {
   // This calls the handleLogout function passed from App.jsx
   const handleLogout = () => {
     onLogout(); 
+    setIsProfileDropdownOpen(false); // Close dropdown on logout
   };
   
-  // User Profile Avatar component (simplified: removed hover-logout logic)
   const UserProfileAvatar = () => (
     <div 
-      className="relative flex items-center h-full transition duration-300"
+      className="relative flex items-center h-full transition duration-300 cursor-pointer"
+      // Toggle dropdown on click
+      onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
     >
-      <a href="/profile">
-        {effectiveUser.photoURL ? (
-          <img 
-            className="h-9 w-9 rounded-full object-cover border-2 border-rose-500 transition duration-300 transform hover:scale-110 cursor-pointer" 
-            src={effectiveUser.photoURL} 
-            alt={effectiveUser.displayName}
-            title={`Go to Profile: ${effectiveUser.displayName}`} 
-          />
-        ) : (
-          <UserCircle className="h-9 w-9 text-rose-500 transition duration-300 transform hover:scale-110 cursor-pointer" title={`Go to Profile: ${effectiveUser.displayName}`} />
-        )}
-      </a>
+      {/* Avatar Image/Icon */}
+      {effectiveUser.photoURL ? (
+        <img 
+          className="h-9 w-9 rounded-full object-cover border-2 border-rose-500 transition duration-300 transform hover:scale-110" 
+          src={effectiveUser.photoURL} 
+          alt={effectiveUser.displayName}
+          title={`Click to open menu`} 
+        />
+      ) : (
+        <UserCircle className="h-9 w-9 text-rose-500 transition duration-300 transform hover:scale-110" title={`Click to open menu`} />
+      )}
+
+      {/* 🎯 Dropdown Menu */}
+      {isProfileDropdownOpen && (
+        <div className="absolute top-full right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-1 z-50 border border-rose-200 transition duration-300">
+          <div className="px-4 py-2 text-sm text-gray-700 font-semibold border-b border-rose-100 truncate">
+            {effectiveUser.displayName}
+          </div>
+          
+          <a
+            href="/profile"
+            className="w-full text-left flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-rose-100 transition duration-150"
+            onClick={() => setIsProfileDropdownOpen(false)} // Close on navigation
+          >
+            <User className="w-4 h-4 mr-2 text-rose-500" /> My Profile
+          </a>
+
+          <button
+            onClick={handleLogout}
+            className="w-full text-left flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-rose-100 transition duration-150"
+          >
+            <LogOut className="w-4 h-4 mr-2 text-rose-500" /> Logout
+          </button>
+        </div>
+      )}
     </div>
   );
 
@@ -52,12 +77,12 @@ const Navbar = ({ isLoggedIn = false, user = null, onLogout = () => {} }) => {
             </a>
           </div>
 
-          {/* Navigation Links (Center) */}
+          {/* Navigation Links (Center) - Removed About link as it wasn't requested */}
           <div className="hidden sm:flex flex-grow justify-center space-x-2 md:space-x-4 transition duration-300">
             <a href="/home" className="text-gray-800 hover:bg-rose-100 hover:text-rose-600 px-3 py-2 rounded-md text-sm font-medium flex items-center transition duration-300">
               <Home className="w-4 h-4 mr-1 transition duration-300" /> Home
             </a>
-            
+            {/* Keeping Contact link as it was present */}
             <a href="/contact" className="text-gray-800 hover:bg-rose-100 hover:text-rose-600 px-3 py-2 rounded-md text-sm font-medium flex items-center transition duration-300">
               <Mail className="w-4 h-4 mr-1 transition duration-300" /> Contact
             </a>
@@ -66,25 +91,8 @@ const Navbar = ({ isLoggedIn = false, user = null, onLogout = () => {} }) => {
           {/* Auth/Profile Section (Right) */}
           <div className="hidden sm:flex flex-shrink-0 items-center space-x-3 transition duration-300">
             
-            {isLoggedIn ? ( // 🎯 Shows Profile/Avatar when true
-              <>
-                <a 
-                    href="/profile" 
-                    className="flex items-center text-rose-600 hover:text-white hover:bg-rose-500 font-semibold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 active:scale-95 border border-rose-500"
-                >
-                    <User className="w-5 h-5 mr-2 transition duration-300" /> My Profile
-                </a>
-                
-                {/* 🎯 FIX: Reliable, direct Logout Button */}
-                <button
-                    onClick={handleLogout}
-                    className="flex items-center bg-rose-500 hover:bg-rose-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105 active:scale-95"
-                >
-                    <LogOut className="w-5 h-5 mr-2" /> Logout
-                </button>
-                
-                <UserProfileAvatar />
-              </>
+            {isLoggedIn ? ( 
+              <UserProfileAvatar /> // Only the dropdown Avatar is shown when logged in
             ) : (
               <>
                 {/* Shows Login/Signup when false */}
@@ -106,7 +114,6 @@ const Navbar = ({ isLoggedIn = false, user = null, onLogout = () => {} }) => {
           </div>
           
           {/* ... Mobile Menu Logic (using isLoggedIn prop) ... */}
-          {/* Mobile Menu Button */}
           <div className="-mr-2 flex sm:hidden">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -131,6 +138,7 @@ const Navbar = ({ isLoggedIn = false, user = null, onLogout = () => {} }) => {
              <a href="/home" className="text-gray-800 hover:bg-rose-100 hover:text-rose-600 block px-3 py-2 rounded-md text-base font-medium flex items-center transition duration-300">
                 <Home className="w-4 h-4 mr-2" /> Home
               </a>
+              {/* Added back About link to mobile menu */}
               <a href="/about" className="text-gray-800 hover:bg-rose-100 hover:text-rose-600 block px-3 py-2 rounded-md text-base font-medium flex items-center transition duration-300">
                 <Info className="w-4 h-4 mr-2" /> About
               </a>
@@ -144,7 +152,7 @@ const Navbar = ({ isLoggedIn = false, user = null, onLogout = () => {} }) => {
                       <a href="/profile" className="text-gray-800 hover:bg-rose-100 hover:text-rose-600 block px-3 py-2 rounded-md text-base font-medium flex items-center transition duration-300">
                           <User className="w-4 h-4 mr-2" /> My Profile
                       </a>
-                      {/* 🎯 FIX: মোবাইল মেনুতেও সরাসরি Logout বোতাম */}
+                      {/* Logout button in mobile menu */}
                       <button onClick={handleLogout} className="w-full text-left flex items-center bg-rose-500 hover:bg-rose-600 text-white font-semibold py-2 px-3 rounded-md transition duration-300 ease-in-out">
                           <LogOut className="w-5 h-5 mr-2" /> Logout
                       </button>

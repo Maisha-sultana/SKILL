@@ -77,19 +77,19 @@ const SkillDetails = ({ allSkills }) => {
                         <div className="flex flex-wrap items-center justify-around p-4 mb-8 rounded-lg bg-rose-100/50 shadow-inner">
                             <div className="text-center">
                                 <p className="text-3xl font-extrabold text-rose-600">
-                                    <DollarSign className="w-6 h-6 inline-block" />{skill.price}
+                                    <DollarSign className="w-6 h-6 inline-block mr-1" />{skill.price}
                                 </p>
                                 <span className="text-sm text-gray-600">Price / Hour</span>
                             </div>
                             <div className="text-center">
                                 <p className="text-3xl font-extrabold text-amber-500">
-                                    <Star className="w-6 h-6 inline-block fill-current" />{skill.rating}
+                                    <Star className="w-6 h-6 inline-block fill-current mr-1" />{skill.rating}
                                 </p>
                                 <span className="text-sm text-gray-600">Rating</span>
                             </div>
                             <div className="text-center">
                                 <p className="text-3xl font-extrabold text-gray-700">
-                                    <Clock className="w-6 h-6 inline-block text-rose-400" />{skill.slotsAvailable}
+                                    <Clock className="w-6 h-6 inline-block text-rose-400 mr-1" />{skill.slotsAvailable}
                                 </p>
                                 <span className="text-sm text-gray-600">Slots Available</span>
                             </div>

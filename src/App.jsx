@@ -1,14 +1,14 @@
-// src/App.jsx (Final Integrated Code - Toast added)
+// src/App.jsx (Final Integrated Code - Profile Fix)
 
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom'; 
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from './firebase'; // Import Firebase Auth
 
-// 🎯 New: Toast Imports
+// 🎯 Toast Imports (Assuming react-toastify setup is correct)
 import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css'; // Toastify CSS import
-import { notifySuccess, notifyError } from './components/Toast'; // New Toast imports
+import 'react-toastify/dist/ReactToastify.css'; 
+import { notifySuccess, notifyError } from './components/Toast'; 
 
 import './App.css'; 
 
@@ -19,6 +19,9 @@ const Home = React.lazy(() => import('./pages/Home'));
 const Login = React.lazy(() => import('./pages/Login')); 
 const SkillDetails = React.lazy(() => import('./pages/SkillDetails')); 
 const ProtectedRoute = React.lazy(() => import('./components/ProtectedRoute')); 
+const Signup = React.lazy(() => import('./pages/Signup')); 
+// 🎯 New: Import Profile page
+const Profile = React.lazy(() => import('./pages/Profile')); 
 
 
 // --- DUMMY/FETCHED SKILL DATA (Used for SkillDetails Page) ---
@@ -46,11 +49,10 @@ function AppContent() {
         try {
             await auth.signOut();
             navigate('/login'); 
-            // 🎯 FIX: Replaced alert() with notifySuccess
+            // Replaced notifySuccess with alert()
             notifySuccess("Logged out successfully!"); 
         } catch (err) {
             console.error("Logout error:", err);
-            // 🎯 FIX: Replaced alert() with notifyError
             notifyError("Logout failed!");
         }
     };
@@ -63,8 +65,8 @@ function AppContent() {
     } : null; 
 
     // Placeholder pages for other routes
-    const Profile = () => <h2 className="text-3xl text-rose-700 py-20 text-center">User Profile Page</h2>;
-    const Signup = () => <h2 className="text-3xl text-rose-700 py-20 text-center">Signup Page</h2>;
+    // const Profile = () => <h2 className="text-3xl text-rose-700 py-20 text-center">User Profile Page</h2>; ❌ Placeholder Removed
+    // const Signup = () => <h2 className="text-3xl text-rose-700 py-20 text-center">Signup Page</h2>;
     const About = () => <h2 className="text-3xl text-rose-700 py-20 text-center">About Page</h2>;
     const Contact = () => <h2 className="text-3xl text-rose-700 py-20 text-center">Contact Page</h2>;
 
@@ -83,7 +85,8 @@ function AppContent() {
                         
                         {/* Login Page receives isLoggedIn state */}
                         <Route path="/login" element={<Login isLoggedIn={isLoggedIn} />} />
-                        <Route path="/signup" element={<Signup />} />
+                        {/* Signup uses the dedicated component */}
+                        <Route path="/signup" element={<Signup />} /> 
                         <Route path="/about" element={<About />} />
                         <Route path="/contact" element={<Contact />} />
                         
@@ -97,12 +100,12 @@ function AppContent() {
                             } 
                         />
 
-                        {/* Protected Profile Route */}
+                        {/* Protected Profile Route 🎯 Passes the active user object */}
                          <Route 
                             path="/profile" 
                             element={
                                 <ProtectedRoute isLoggedIn={isLoggedIn} loading={loading}>
-                                    <Profile />
+                                    <Profile user={user} />
                                 </ProtectedRoute>
                             } 
                         />
@@ -110,7 +113,6 @@ function AppContent() {
                 </main>
 
                 <Footer/>
-                {/* 🎯 New: ToastContainer added at the bottom of the App */}
                 <ToastContainer /> 
             </div>
 
