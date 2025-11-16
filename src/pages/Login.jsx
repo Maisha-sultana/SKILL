@@ -1,13 +1,21 @@
 // src/pages/Login.jsx
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signInWithPopup } from 'firebase/auth'; // <-- Core Firebase Auth function
 import { auth, googleProvider } from '../firebase'; // <-- Import Auth/Provider
 import { LogIn } from 'lucide-react';
+// 🎯 New: Import Toast functions
+import { notifySuccess, notifyError } from '../components/Toast'; 
 
 const Login = ({ isLoggedIn }) => {
     const navigate = useNavigate();
+
+    // FIX: Synchronously check if the user is already logged in.
+    if (isLoggedIn) {
+        navigate('/profile', { replace: true });
+        return null; // Stop rendering while navigating
+    }
 
     // --- Google Sign-In Function ---
     const signInWithGoogle = async () => {
@@ -19,20 +27,16 @@ const Login = ({ isLoggedIn }) => {
             const redirectPath = sessionStorage.getItem('redirectPath') || '/profile'; 
             sessionStorage.removeItem('redirectPath');
             
-            alert("SUCCESS: Successfully logged in!");
+            // 🎯 FIX: Replaced alert() with notifySuccess
+            notifySuccess("Successfully logged in!");
             navigate(redirectPath, { replace: true });
         } catch (error) {
             console.error("Google sign in error:", error.message);
-            alert("ERROR: Google sign in failed: " + error.message);
+            // 🎯 FIX: Replaced alert() with notifyError
+            notifyError("Google sign in failed: " + error.message);
         }
     };
     // -----------------------------
-
-    useEffect(() => {
-        if (isLoggedIn) {
-            navigate('/profile', { replace: true });
-        }
-    }, [isLoggedIn, navigate]);
 
     return (
         <div className="flex justify-center items-center py-20 min-h-[60vh]">

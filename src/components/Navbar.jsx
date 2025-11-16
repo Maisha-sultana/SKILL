@@ -8,8 +8,7 @@ const Navbar = ({ isLoggedIn = false, user = null, onLogout = () => {} }) => {
   
   // isLoggedIn prop is used directly now
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isProfileHovered, setIsProfileHovered] = useState(false); 
-
+  
   // Use props for user info, providing a fallback if null
   const effectiveUser = user || { displayName: 'User', photoURL: 'https://i.pravatar.cc/150?img=1' };
   
@@ -20,11 +19,10 @@ const Navbar = ({ isLoggedIn = false, user = null, onLogout = () => {} }) => {
     onLogout(); 
   };
   
+  // User Profile Avatar component (simplified: removed hover-logout logic)
   const UserProfileAvatar = () => (
     <div 
       className="relative flex items-center h-full transition duration-300"
-      onMouseEnter={() => setIsProfileHovered(true)}
-      onMouseLeave={() => setIsProfileHovered(false)}
     >
       <a href="/profile">
         {effectiveUser.photoURL ? (
@@ -38,20 +36,6 @@ const Navbar = ({ isLoggedIn = false, user = null, onLogout = () => {} }) => {
           <UserCircle className="h-9 w-9 text-rose-500 transition duration-300 transform hover:scale-110 cursor-pointer" title={`Go to Profile: ${effectiveUser.displayName}`} />
         )}
       </a>
-
-      {isProfileHovered && (
-        <div className="absolute top-full right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-1 z-50 border border-rose-200 transition duration-300 transform translate-y-0 opacity-100">
-          <div className="px-4 py-2 text-sm text-gray-700 font-semibold border-b border-rose-100">
-            {effectiveUser.displayName}
-          </div>
-          <button
-            onClick={handleLogout}
-            className="w-full text-left flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-rose-100 transition duration-150"
-          >
-            <LogOut className="w-4 h-4 mr-2 text-rose-500" /> Logout
-          </button>
-        </div>
-      )}
     </div>
   );
 
@@ -73,9 +57,7 @@ const Navbar = ({ isLoggedIn = false, user = null, onLogout = () => {} }) => {
             <a href="/home" className="text-gray-800 hover:bg-rose-100 hover:text-rose-600 px-3 py-2 rounded-md text-sm font-medium flex items-center transition duration-300">
               <Home className="w-4 h-4 mr-1 transition duration-300" /> Home
             </a>
-            <a href="/about" className="text-gray-800 hover:bg-rose-100 hover:text-rose-600 px-3 py-2 rounded-md text-sm font-medium flex items-center transition duration-300">
-              <Info className="w-4 h-4 mr-1 transition duration-300" /> About
-            </a>
+            
             <a href="/contact" className="text-gray-800 hover:bg-rose-100 hover:text-rose-600 px-3 py-2 rounded-md text-sm font-medium flex items-center transition duration-300">
               <Mail className="w-4 h-4 mr-1 transition duration-300" /> Contact
             </a>
@@ -92,6 +74,14 @@ const Navbar = ({ isLoggedIn = false, user = null, onLogout = () => {} }) => {
                 >
                     <User className="w-5 h-5 mr-2 transition duration-300" /> My Profile
                 </a>
+                
+                {/* 🎯 FIX: Reliable, direct Logout Button */}
+                <button
+                    onClick={handleLogout}
+                    className="flex items-center bg-rose-500 hover:bg-rose-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105 active:scale-95"
+                >
+                    <LogOut className="w-5 h-5 mr-2" /> Logout
+                </button>
                 
                 <UserProfileAvatar />
               </>
@@ -154,6 +144,7 @@ const Navbar = ({ isLoggedIn = false, user = null, onLogout = () => {} }) => {
                       <a href="/profile" className="text-gray-800 hover:bg-rose-100 hover:text-rose-600 block px-3 py-2 rounded-md text-base font-medium flex items-center transition duration-300">
                           <User className="w-4 h-4 mr-2" /> My Profile
                       </a>
+                      {/* 🎯 FIX: মোবাইল মেনুতেও সরাসরি Logout বোতাম */}
                       <button onClick={handleLogout} className="w-full text-left flex items-center bg-rose-500 hover:bg-rose-600 text-white font-semibold py-2 px-3 rounded-md transition duration-300 ease-in-out">
                           <LogOut className="w-5 h-5 mr-2" /> Logout
                       </button>

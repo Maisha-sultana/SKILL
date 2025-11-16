@@ -35,8 +35,8 @@ const howItWorksSteps = [
 ];
 
 
-// 🎯 Home component now accepts isLoggedIn prop from App.jsx
-const Home = ({ isLoggedIn }) => {
+// 🎯 Home component now accepts isLoggedIn and loading props
+const Home = ({ isLoggedIn, loading }) => {
     const navigate = useNavigate(); // Hook for navigation
     const [skills, setSkills] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -63,6 +63,9 @@ const Home = ({ isLoggedIn }) => {
 
     // 🎯 HANDLER FOR VIEW DETAILS BUTTON (Protected)
     const handleViewDetails = (skillId) => {
+        // 🎯 FIX: If authentication state is still loading, block the navigation to prevent false redirect to /login.
+        if (loading) return; 
+
         if (isLoggedIn) {
             navigate(`/skill/${skillId}`); // Go to protected details page
         } else {
@@ -72,7 +75,11 @@ const Home = ({ isLoggedIn }) => {
         }
     };
 
-    if (isLoading) {
+    if (isLoading || loading) {
+        // Differentiate loading messages
+        if (loading && !isLoading) {
+            return <div className="text-center py-20 text-xl font-semibold text-rose-600">Checking user status...</div>;
+        }
         return <div className="text-center py-20 text-xl font-semibold text-rose-600">Loading skills data...</div>;
     }
 

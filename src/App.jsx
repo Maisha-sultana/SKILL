@@ -1,9 +1,14 @@
-// src/App.jsx (Final Integrated Code)
+// src/App.jsx (Final Integrated Code - Toast added)
 
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom'; 
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from './firebase'; // Import Firebase Auth
+
+// 🎯 New: Toast Imports
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; // Toastify CSS import
+import { notifySuccess, notifyError } from './components/Toast'; // New Toast imports
 
 import './App.css'; 
 
@@ -14,7 +19,6 @@ const Home = React.lazy(() => import('./pages/Home'));
 const Login = React.lazy(() => import('./pages/Login')); 
 const SkillDetails = React.lazy(() => import('./pages/SkillDetails')); 
 const ProtectedRoute = React.lazy(() => import('./components/ProtectedRoute')); 
-// const { notifySuccess } = React.lazy(() => import('./components/Toast')); // notifySuccess import removed
 
 
 // --- DUMMY/FETCHED SKILL DATA (Used for SkillDetails Page) ---
@@ -42,11 +46,12 @@ function AppContent() {
         try {
             await auth.signOut();
             navigate('/login'); 
-            // Replaced notifySuccess with alert()
-            alert("SUCCESS: Logged out successfully!"); 
+            // 🎯 FIX: Replaced alert() with notifySuccess
+            notifySuccess("Logged out successfully!"); 
         } catch (err) {
             console.error("Logout error:", err);
-            alert("ERROR: Logout failed!");
+            // 🎯 FIX: Replaced alert() with notifyError
+            notifyError("Logout failed!");
         }
     };
     
@@ -73,8 +78,8 @@ function AppContent() {
                 
                 <main className="flex-grow">
                     <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/home" element={<Home />} />
+                        <Route path="/" element={<Home isLoggedIn={isLoggedIn} loading={loading} />} />
+                        <Route path="/home" element={<Home isLoggedIn={isLoggedIn} loading={loading} />} />
                         
                         {/* Login Page receives isLoggedIn state */}
                         <Route path="/login" element={<Login isLoggedIn={isLoggedIn} />} />
@@ -105,6 +110,8 @@ function AppContent() {
                 </main>
 
                 <Footer/>
+                {/* 🎯 New: ToastContainer added at the bottom of the App */}
+                <ToastContainer /> 
             </div>
 
         </React.Suspense>

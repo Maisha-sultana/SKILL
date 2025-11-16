@@ -1,13 +1,31 @@
-// src/components/Toast.jsx (Using standard alert())
+// src/components/Toast.jsx (Using react-toastify)
 
-// No react or toast imports needed.
+import { toast } from 'react-toastify'; 
+// Note: We assume 'react-toastify' is installed. 
+// The ToastContainer component needs to be added to App.jsx.
 
 export const notifySuccess = (message) => {
-    // Standard JavaScript alert ব্যবহার করা হয়েছে
-    alert("SUCCESS: " + message);
+    toast.success(message, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+    });
 };
 
 export const notifyError = (message) => {
-    // Standard JavaScript alert ব্যবহার করা হয়েছে
-    alert("ERROR: " + message);
+    toast.error(message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+    });
 };
