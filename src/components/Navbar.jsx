@@ -1,21 +1,22 @@
-// src/components/Navbar.jsx (Based on the last successful structure, but non-fixed)
+// src/components/Navbar.jsx (Updated)
 
 import React, { useState } from 'react';
 import { LogIn, User, Menu, X, Home, Info, Mail, LogOut, UserCircle } from 'lucide-react'; 
 
-// DUMMY PROPS FOR DEMO (Since App.jsx no longer handles auth state logic)
+// 🎯 FIX: Rely entirely on props (isLoggedIn, user, onLogout)
 const Navbar = ({ isLoggedIn = false, user = null, onLogout = () => {} }) => {
   
-  const [isInternalLoggedIn, setIsInternalLoggedIn] = useState(isLoggedIn);
+  // isLoggedIn prop is used directly now
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileHovered, setIsProfileHovered] = useState(false); 
 
+  // Use props for user info, providing a fallback if null
   const effectiveUser = user || { displayName: 'User', photoURL: 'https://i.pravatar.cc/150?img=1' };
   
   const logoText = "SkillSwap"; 
 
+  // This calls the handleLogout function passed from App.jsx
   const handleLogout = () => {
-    setIsInternalLoggedIn(false);
     onLogout(); 
   };
   
@@ -56,38 +57,34 @@ const Navbar = ({ isLoggedIn = false, user = null, onLogout = () => {} }) => {
 
 
   return (
-    // Removed 'fixed top-0 left-0 right-0 z-50'. Now uses w-full.
     <nav className="w-full bg-white shadow-md border-b border-rose-200 transition duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           
-          {/* ১. লোগো (বামদিকে - Left) */}
+          {/* Logo Section (Left) */}
           <div className="flex-shrink-0 transition duration-300">
             <a href="/" className="text-2xl font-extrabold text-rose-600 tracking-wider hover:text-rose-700 hover:scale-105 transform transition duration-300">
               {logoText}
             </a>
           </div>
 
-          {/* ২. নেভিগেশন লিঙ্কস (মাঝখানে - Center) */}
+          {/* Navigation Links (Center) */}
           <div className="hidden sm:flex flex-grow justify-center space-x-2 md:space-x-4 transition duration-300">
-            
             <a href="/home" className="text-gray-800 hover:bg-rose-100 hover:text-rose-600 px-3 py-2 rounded-md text-sm font-medium flex items-center transition duration-300">
               <Home className="w-4 h-4 mr-1 transition duration-300" /> Home
             </a>
-            
             <a href="/about" className="text-gray-800 hover:bg-rose-100 hover:text-rose-600 px-3 py-2 rounded-md text-sm font-medium flex items-center transition duration-300">
               <Info className="w-4 h-4 mr-1 transition duration-300" /> About
             </a>
-
             <a href="/contact" className="text-gray-800 hover:bg-rose-100 hover:text-rose-600 px-3 py-2 rounded-md text-sm font-medium flex items-center transition duration-300">
               <Mail className="w-4 h-4 mr-1 transition duration-300" /> Contact
             </a>
           </div>
             
-          {/* ৩. Auth/Profile Section (ডানদিকে - Right Corner) */}
+          {/* Auth/Profile Section (Right) */}
           <div className="hidden sm:flex flex-shrink-0 items-center space-x-3 transition duration-300">
             
-            {isInternalLoggedIn ? (
+            {isLoggedIn ? ( // 🎯 Shows Profile/Avatar when true
               <>
                 <a 
                     href="/profile" 
@@ -100,6 +97,7 @@ const Navbar = ({ isLoggedIn = false, user = null, onLogout = () => {} }) => {
               </>
             ) : (
               <>
+                {/* Shows Login/Signup when false */}
                 <a
                   href="/login"
                   className="flex items-center text-rose-600 hover:text-white hover:bg-rose-500 font-semibold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 active:scale-95 border border-rose-500"
@@ -117,7 +115,8 @@ const Navbar = ({ isLoggedIn = false, user = null, onLogout = () => {} }) => {
 
           </div>
           
-          {/* মোবাইল মেনু বাটন (Mobile View) */}
+          {/* ... Mobile Menu Logic (using isLoggedIn prop) ... */}
+          {/* Mobile Menu Button */}
           <div className="-mr-2 flex sm:hidden">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -150,7 +149,7 @@ const Navbar = ({ isLoggedIn = false, user = null, onLogout = () => {} }) => {
               </a>
               
               {/* Auth Buttons/Links for Mobile View */}
-              {isInternalLoggedIn ? (
+              {isLoggedIn ? (
                   <>
                       <a href="/profile" className="text-gray-800 hover:bg-rose-100 hover:text-rose-600 block px-3 py-2 rounded-md text-base font-medium flex items-center transition duration-300">
                           <User className="w-4 h-4 mr-2" /> My Profile

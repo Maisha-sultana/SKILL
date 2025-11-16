@@ -1,6 +1,7 @@
 // src/pages/Home.jsx
 
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 // Swiper Imports
 import { Swiper, SwiperSlide } from 'swiper/react';
 // Swiper Styles
@@ -26,7 +27,7 @@ const topProviderData = [
     { id: 6, name: 'Zahid Islam', skill: 'Python Programming', rating: 4.4, reviews: 130, avatar: 'https://i.pravatar.cc/150?img=11' },
 ];
 
-// --- STATIC DATA: How It Works Steps ---
+// --- STATIC DATA: How It Works Steps (Updated for Swap theme) ---
 const howItWorksSteps = [
     { id: 1, title: 'Discover Your Need', description: 'Search our library for the specific skill you need to master or exchange a service for.', icon: Search },
     { id: 2, title: 'Connect & Schedule', description: 'Match with a verified provider or peer and schedule your session instantly.', icon: Calendar },
@@ -34,7 +35,9 @@ const howItWorksSteps = [
 ];
 
 
-const Home = () => {
+// 🎯 Home component now accepts isLoggedIn prop from App.jsx
+const Home = ({ isLoggedIn }) => {
+    const navigate = useNavigate(); // Hook for navigation
     const [skills, setSkills] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -58,6 +61,17 @@ const Home = () => {
             });
     }, []);
 
+    // 🎯 HANDLER FOR VIEW DETAILS BUTTON (Protected)
+    const handleViewDetails = (skillId) => {
+        if (isLoggedIn) {
+            navigate(`/skill/${skillId}`); // Go to protected details page
+        } else {
+            // Save path and redirect to login
+            sessionStorage.setItem('redirectPath', `/skill/${skillId}`);
+            navigate('/login');
+        }
+    };
+
     if (isLoading) {
         return <div className="text-center py-20 text-xl font-semibold text-rose-600">Loading skills data...</div>;
     }
@@ -69,11 +83,8 @@ const Home = () => {
     return (
         <div className="py-0 md:py-4">
             
-            {/* ======================================================= */}
-            {/* 1. HERO SLIDER SECTION (Title & Image Carousel) */}
-            {/* ======================================================= */}
+            {/* ... 1. HERO SLIDER SECTION ... */}
             <header className="mb-12 pt-4 md:pt-8">
-                {/* Explore Title with Funky Font & Gradient */}
                 <h1 className="text-5xl md:text-7xl font-extrabold text-center pb-6 font-serif">
                     <span 
                         className="bg-clip-text text-transparent bg-gradient-to-r from-rose-700 to-pink-500 transition duration-500"
@@ -127,11 +138,8 @@ const Home = () => {
                 </Swiper>
             </div>
             
-            {/* ======================================================= */}
             {/* 2. POPULAR SKILLS SECTION (Cards) */}
-            {/* ======================================================= */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-                {/* Popular Skills Title with Gradient */}
                 <h2 className="text-4xl md:text-5xl font-extrabold mb-12 text-center font-serif drop-shadow-lg">
                     <span className="bg-clip-text text-transparent bg-gradient-to-r from-rose-700 to-pink-500 transition duration-500">
                         Popular Skills
@@ -168,8 +176,9 @@ const Home = () => {
                                     </span>
                                 </div>
                                 
-                                {/* View Details Button */}
+                                {/* View Details Button - Calls handleViewDetails */}
                                 <button 
+                                    onClick={() => handleViewDetails(skill.skillId)}
                                     className="w-full bg-rose-600 text-white py-2 rounded-lg font-semibold hover:bg-rose-700 transition duration-300 flex items-center justify-center mt-auto transform hover:scale-[1.02] active:scale-95"
                                 >
                                     <Eye className="w-5 h-5 mr-2" /> View Details
@@ -180,9 +189,7 @@ const Home = () => {
                 </div>
             </div>
 
-            {/* ======================================================= */}
             {/* 3. TOP RATED PROVIDERS SECTION (SWIPER CAROUSEL) */}
-            {/* ======================================================= */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
                 <h2 className="text-4xl md:text-5xl font-extrabold mb-12 text-center font-serif drop-shadow-lg">
                     <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-rose-700 transition duration-500">
@@ -230,10 +237,7 @@ const Home = () => {
                 </div>
             </div>
 
-            {/* ======================================================= */}
-            {/* 4. HOW IT WORKS SECTION (WITH STRONGER SKEW EFFECT) */}
-            {/* ======================================================= */}
-            {/* Changed background from rose-100/50 to solid rose-200 and increased skew-y to 2 */}
+            {/* 4. HOW IT WORKS SECTION */}
             <div className="max-w-full bg-rose-200 py-20 transform skew-y-2 border-y-4 border-rose-300 shadow-inner">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 transform -skew-y-2">
                     <h2 className="text-4xl md:text-5xl font-extrabold mb-16 text-center font-serif drop-shadow-lg">
