@@ -1,5 +1,3 @@
-// src/pages/Signup.jsx (Password Toggle Implemented)
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Mail, Lock, User, Link, UserPlus, Eye, EyeOff } from 'lucide-react'; // 🎯 Added Eye, EyeOff
@@ -17,7 +15,7 @@ const validatePassword = (password) => {
     if (!/[a-z]/.test(password)) {
         return "Password must contain at least one lowercase letter.";
     }
-    return null; // Valid
+    return null; 
 };
 
 const Signup = () => {
@@ -28,16 +26,13 @@ const Signup = () => {
     const [password, setPassword] = useState('');
     const [passwordError, setPasswordError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    // 🎯 New State for Password Toggle
     const [showPassword, setShowPassword] = useState(false);
 
-    // --- Helper function for navigation after successful event ---
     const handleSuccessfulEvent = () => {
         notifySuccess("Registration successful! Welcome to SkillSwap.");
         navigate('/home', { replace: true });
     };
 
-    // --- 1. Traditional Email/Password Signup Function ---
     const signUpWithForm = async (e) => {
         e.preventDefault();
         setIsLoading(true);
@@ -51,14 +46,12 @@ const Signup = () => {
         }
 
         try {
-            // 1. Create user in Firebase
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
 
-            // 2. Update user profile (Name and PhotoURL)
             await updateProfile(user, {
                 displayName: name,
-                photoURL: photoURL || null, // Allow null if PhotoURL is empty
+                photoURL: photoURL || null, 
             });
 
             handleSuccessfulEvent();
@@ -70,7 +63,6 @@ const Signup = () => {
         }
     };
 
-    // --- 2. Google Sign-In/Signup Function ---
     const signUpWithGoogle = async () => {
         setIsLoading(true);
         try {
@@ -84,7 +76,6 @@ const Signup = () => {
         }
     };
     
-    // Check validation on password change
     const handlePasswordChange = (e) => {
         const newPassword = e.target.value;
         setPassword(newPassword);
@@ -97,8 +88,7 @@ const Signup = () => {
         <div className="flex justify-center items-center py-10 min-h-[70vh]">
             <div className="w-full max-w-sm p-8 bg-white rounded-xl shadow-2xl border border-rose-200 text-center">
                 <h2 className="text-3xl font-bold text-rose-600 mb-6 font-serif">Create Account</h2>
-                
-                {/* --- Traditional Signup Form --- */}
+           
                 <form onSubmit={signUpWithForm} className="space-y-4">
                     
                     {/* Name Field */}
@@ -126,8 +116,7 @@ const Signup = () => {
                             className="w-full pl-10 pr-4 py-3 border border-rose-300 rounded-lg focus:ring-rose-500 focus:border-rose-500 transition duration-150"
                         />
                     </div>
-                    
-                    {/* Photo URL Field */}
+             
                     <div className="relative">
                         <Link className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                         <input
@@ -139,11 +128,10 @@ const Signup = () => {
                         />
                     </div>
 
-                    {/* Password Field (Modified for Toggle) */}
                     <div className="relative">
                         <Lock className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                         <input
-                            // 🎯 Dynamic type based on showPassword state
+                           
                             type={showPassword ? "text" : "password"}
                             placeholder="Password (Min 6 chars, Upper/Lower)"
                             value={password}
@@ -151,7 +139,7 @@ const Signup = () => {
                             required
                             className={`w-full pl-10 pr-10 py-3 border rounded-lg focus:ring-rose-500 focus:border-rose-500 transition duration-150 ${passwordError ? 'border-red-500' : 'border-rose-300'}`}
                         />
-                         {/* 🎯 Toggle Button */}
+                      
                         <button
                             type="button"
                             onClick={() => setShowPassword(!showPassword)}
@@ -161,8 +149,7 @@ const Signup = () => {
                             {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                         </button>
                     </div>
-                    
-                    {/* Password Error Message */}
+                  
                     {passwordError && (
                         <p className="text-sm text-red-600 text-left -mt-2">{passwordError}</p>
                     )}
@@ -181,7 +168,6 @@ const Signup = () => {
                     <p className="text-center font-semibold mx-4 text-gray-500 text-sm">OR</p>
                 </div>
 
-                {/* --- Social Login Button (Google) --- */}
                 <button
                     onClick={signUpWithGoogle} 
                     disabled={isLoading}

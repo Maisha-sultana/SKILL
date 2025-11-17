@@ -1,10 +1,8 @@
-// src/pages/Login.jsx (Password Toggle Implemented)
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signInWithPopup, signInWithEmailAndPassword } from 'firebase/auth'; 
 import { auth, googleProvider } from '../firebase'; 
-import { LogIn, Mail, Lock, Globe, Eye, EyeOff } from 'lucide-react'; // 🎯 Added Eye, EyeOff
+import { LogIn, Mail, Lock, Globe, Eye, EyeOff } from 'lucide-react';
 import { notifySuccess, notifyError } from '../components/Toast'; 
 
 const Login = ({ isLoggedIn }) => {
@@ -12,30 +10,26 @@ const Login = ({ isLoggedIn }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    // 🎯 New State for Password Toggle
     const [showPassword, setShowPassword] = useState(false); 
 
-    // Synchronously check if the user is already logged in.
+
     if (isLoggedIn) {
         navigate('/home', { replace: true });
         return null;
     }
 
-    // --- Helper function for navigation after successful login ---
     const handleSuccessfulLogin = () => {
         const redirectPath = sessionStorage.getItem('redirectPath') || '/home';
         sessionStorage.removeItem('redirectPath');
         notifySuccess("Successfully logged in!");
         navigate(redirectPath, { replace: true });
     };
-    
-    // --- Handler for Forgot Password link (Passes email state) ---
+
     const handleForgetPasswordClick = (e) => {
         e.preventDefault();
         navigate('/forget-password', { state: { email: email } });
     };
 
-    // --- 1. Traditional Email/Password Sign-In Function ---
     const signInWithForm = async (e) => {
         e.preventDefault();
         if (!email || !password) {
@@ -55,7 +49,7 @@ const Login = ({ isLoggedIn }) => {
         }
     };
 
-    // --- 2. Google Sign-In Function ---
+
     const signInWithGoogle = async () => {
         setIsLoading(true);
         try {
@@ -73,8 +67,7 @@ const Login = ({ isLoggedIn }) => {
         <div className="flex justify-center items-center py-20 min-h-[60vh]">
             <div className="w-full max-w-sm p-8 bg-white rounded-xl shadow-2xl border border-rose-200 text-center">
                 <h2 className="text-3xl font-bold text-rose-600 mb-6 font-serif">Sign In to SkillSwap</h2>
-                
-                {/* --- Traditional Login Form --- */}
+           
                 <form onSubmit={signInWithForm} className="space-y-4">
                     
                     {/* Email Field */}
@@ -90,11 +83,10 @@ const Login = ({ isLoggedIn }) => {
                         />
                     </div>
 
-                    {/* Password Field (Modified for Toggle) */}
                     <div className="relative">
                         <Lock className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                         <input
-                            // 🎯 Dynamic type based on showPassword state
+                          
                             type={showPassword ? "text" : "password"}
                             placeholder="Password"
                             value={password}
@@ -102,7 +94,7 @@ const Login = ({ isLoggedIn }) => {
                             required
                             className="w-full pl-10 pr-10 py-3 border border-rose-300 rounded-lg focus:ring-rose-500 focus:border-rose-500 transition duration-150"
                         />
-                         {/* 🎯 Toggle Button */}
+                         
                         <button
                             type="button"
                             onClick={() => setShowPassword(!showPassword)}
@@ -138,14 +130,14 @@ const Login = ({ isLoggedIn }) => {
                     <p className="text-center font-semibold mx-4 text-gray-500 text-sm">OR</p>
                 </div>
 
-                {/* --- Social Login Button (Google) --- */}
+         
                 <button
                     onClick={signInWithGoogle} 
                     disabled={isLoading}
-                    // Styling: White BG, Rose Text, Subtle Rose Border
+    
                     className="w-full flex items-center justify-center bg-white text-rose-600 font-semibold py-3 px-4 rounded-lg shadow-md transition duration-300 transform hover:scale-[1.01] disabled:opacity-50 border border-rose-300 hover:bg-rose-50"
                 >
-                    {/* 🎯 FIX: Using Lucide-React Globe icon */}
+                
                     <Globe className="w-5 h-5 mr-3 text-rose-600" />
                     Sign in with Google
                 </button>

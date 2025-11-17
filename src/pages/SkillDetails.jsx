@@ -1,5 +1,3 @@
-// src/pages/SkillDetails.jsx (Clean, Modern Card Design with AOS Animation)
-
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Star, DollarSign, Mail, User, Clock, CheckCircle, Tag } from 'lucide-react';
@@ -15,7 +13,7 @@ const initialFormState = {
 const SkillDetails = ({ allSkills }) => {
     const { skillId } = useParams();
     const [skill, setSkill] = useState(null);
-    // 🎯 FIX: Corrected useState initialization
+    
     const [formData, setFormData] = useState(initialFormState); 
 
     useEffect(() => {
@@ -39,24 +37,20 @@ const SkillDetails = ({ allSkills }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         
-        // 1. Success Toast দেখানো
         notifySuccess(`Session booked with ${skill.providerName}! We will contact you at ${formData.email}.`);
-        
-        // 2. ফর্ম ক্লিয়ার করা
+     
         setFormData(initialFormState);
     };
 
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-            
-            {/* New Main Container - AOS fade-in */}
+          
             <div 
                 className="bg-white rounded-2xl shadow-2xl border border-rose-100 overflow-hidden"
-                data-aos="fade-up" // Main animation for the whole card
+                data-aos="fade-up" 
                 data-aos-duration="600"
             >
                 
-                {/* 1. TOP HEADER SECTION (Skill Name & Category) - AOS fade-down */}
                 <div 
                     className="p-6 md:p-10 bg-rose-50 border-b-4 border-rose-300"
                     data-aos="fade-down"
@@ -65,19 +59,16 @@ const SkillDetails = ({ allSkills }) => {
                     <div className="flex items-center text-xl text-rose-700 font-semibold mb-2">
                         <Tag className="w-5 h-5 mr-2" /> {skill.category}
                     </div>
-                    {/* Title color fixed via index.css change */}
+                 
                     <h1 className="text-4xl md:text-5xl font-extrabold text-rose-700 mb-2 font-serif leading-tight">
                         {skill.skillName}
                     </h1>
                 </div>
 
-                {/* 2. MAIN BODY GRID (Details 60% vs. Form 40%) */}
                 <div className="grid grid-cols-1 lg:grid-cols-5 divide-y lg:divide-y-0 lg:divide-x divide-rose-100">
-                    
-                    {/* LEFT COLUMN (Details & Image) */}
+            
                     <div className="lg:col-span-3 p-8 md:p-10">
-                        
-                        {/* Image Card - AOS zoom-in */}
+                      
                         <div 
                             className="w-full h-80 mb-8 rounded-xl overflow-hidden shadow-lg border border-rose-200"
                             data-aos="zoom-in"
@@ -86,13 +77,11 @@ const SkillDetails = ({ allSkills }) => {
                              <img 
                                 src={skill.image} 
                                 alt={skill.skillName} 
-                                // Image will cover the space, adjusted for better aesthetics
                                 className="w-full h-full object-cover"
                                 onError={(e) => { e.target.onerror = null; e.target.src = `https://via.placeholder.co/800x600?text=${skill.skillName}`; }}
                             />
                         </div>
 
-                        {/* Key Metrics Row - AOS fade-right */}
                         <div 
                             className="flex flex-wrap items-center justify-around p-4 mb-8 rounded-lg bg-rose-100/50 shadow-inner"
                             data-aos="fade-right"
@@ -123,8 +112,7 @@ const SkillDetails = ({ allSkills }) => {
                         <p className="text-lg text-gray-700 mb-10 leading-relaxed">
                             {skill.description}
                         </p>
-                        
-                        {/* Provider Info Card - AOS fade-up */}
+                   
                         <div 
                             className="mt-8 p-6 bg-rose-100 rounded-xl shadow-md border border-rose-200"
                             data-aos="fade-up"
@@ -144,7 +132,6 @@ const SkillDetails = ({ allSkills }) => {
                         </div>
                     </div>
 
-                    {/* RIGHT COLUMN (Booking Form) - AOS slide-left */}
                     <div 
                         className="lg:col-span-2 p-8 md:p-10 bg-rose-50"
                         data-aos="fade-left"
@@ -183,7 +170,6 @@ const SkillDetails = ({ allSkills }) => {
                             
                             <button
                                 type="submit"
-                                // AOS animation on button
                                 className="w-full bg-rose-600 text-white font-semibold py-3 rounded-lg shadow-lg hover:bg-rose-700 transition duration-300 transform hover:scale-[1.01] active:scale-95 mt-4 flex items-center justify-center"
                                 data-aos="zoom-in"
                                 data-aos-delay="400"

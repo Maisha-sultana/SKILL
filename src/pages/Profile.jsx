@@ -1,14 +1,11 @@
-// src/pages/Profile.jsx (Functional Update Profile)
-
 import React, { useState } from 'react';
 import { User, Mail, Camera, Edit, UserCircle, Save, X, Link } from 'lucide-react';
-import { updateProfile } from 'firebase/auth'; // Import updateProfile
-import { auth } from '../firebase'; // Import auth instance
+import { updateProfile } from 'firebase/auth'; 
+import { auth } from '../firebase'; 
 import { notifySuccess, notifyError } from '../components/Toast';
 
 const Profile = ({ user }) => {
     
-    // 🎯 New States for Profile Editing
     const [isEditing, setIsEditing] = useState(false);
     const [newName, setNewName] = useState(user?.displayName || '');
     const [newPhotoURL, setNewPhotoURL] = useState(user?.photoURL || '');
@@ -20,7 +17,7 @@ const Profile = ({ user }) => {
 
     const { displayName, email, photoURL } = user;
 
-    // --- Profile Update Logic ---
+  
     const handleUpdate = async (e) => {
         e.preventDefault();
         setIsUpdating(true);
@@ -35,16 +32,12 @@ const Profile = ({ user }) => {
         try {
             await updateProfile(currentUser, {
                 displayName: newName,
-                // Ensure photoURL is null or an empty string if the input is cleared
                 photoURL: newPhotoURL || null, 
             });
-
-            // 🎯 Force the user object to refresh from Firebase to update the UI immediately
-            // The useAuthState hook in App.jsx should then pick up the change.
             await currentUser.reload();
             
             notifySuccess("Profile updated successfully!");
-            setIsEditing(false); // Close the form
+            setIsEditing(false); 
         } catch (error) {
             console.error("Profile update error:", error.message);
             notifyError("Failed to update profile: " + error.message);
@@ -52,20 +45,17 @@ const Profile = ({ user }) => {
             setIsUpdating(false);
         }
     };
-    
-    // --- Cancel Editing ---
+  
     const handleCancelEdit = () => {
         setIsEditing(false);
-        // Reset local state to current Firebase values
+ 
         setNewName(user.displayName || '');
         setNewPhotoURL(user.photoURL || '');
     };
 
-    // --- Main Profile Content ---
     const ProfileDisplay = () => (
         <div className="p-8 md:p-12 text-center relative">
-            
-            {/* Avatar Section */}
+          
             <div className="absolute left-1/2 transform -translate-x-1/2 -translate-y-24">
                 <div className="relative inline-block border-8 border-white rounded-full shadow-2xl">
                     {photoURL ? (
@@ -78,7 +68,7 @@ const Profile = ({ user }) => {
                     ) : (
                         <UserCircle className="w-32 h-32 text-rose-500" />
                     )}
-                    {/* Placeholder for camera icon, only functional in edit mode */}
+           
                     <div className="absolute bottom-0 right-0 p-2 bg-rose-600 rounded-full text-white border-2 border-white cursor-default">
                         <Camera className="w-4 h-4" />
                     </div>
@@ -86,21 +76,19 @@ const Profile = ({ user }) => {
             </div>
 
             <div className="pt-16">
-                
-                {/* User Name */}
+          
                 <h2 className="text-3xl font-extrabold text-gray-900 mb-1 mt-4 flex items-center justify-center">
                     <User className="w-6 h-6 mr-3 text-rose-500 hidden sm:inline-block" /> 
                     {displayName || "User Name Not Set"}
                 </h2>
                 
-                {/* User Email */}
                 <p className="text-lg text-gray-600 mb-8 flex items-center justify-center">
                     <Mail className="w-5 h-5 mr-3 text-rose-500" /> 
                     {email}
                 </p>
                 
                 <div className="space-y-4 pt-4 border-t border-rose-100">
-                    {/* --- Update Profile Button (Now opens edit form) --- */}
+                 
                     <button
                         onClick={() => setIsEditing(true)}
                         className="w-full max-w-xs mx-auto flex items-center justify-center bg-rose-600 hover:bg-rose-700 text-white font-semibold py-3 px-4 rounded-lg shadow-lg transition duration-300 transform hover:scale-[1.01]"
@@ -116,8 +104,7 @@ const Profile = ({ user }) => {
             </div>
         </div>
     );
-    
-    // --- Profile Editing Form (Modal-like appearance) ---
+   
     const ProfileEditForm = () => (
         <div className="p-8 md:p-12 text-left relative">
             <h2 className="text-3xl font-bold text-rose-600 mb-6 font-serif border-b pb-3 border-rose-200">Edit Profile Details</h2>
@@ -169,7 +156,7 @@ const Profile = ({ user }) => {
                     )}
                 </div>
 
-                {/* Email Display (Read-only) */}
+         
                 <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">Email Address (Cannot be changed)</label>
                     <div className="relative">
@@ -204,8 +191,7 @@ const Profile = ({ user }) => {
             </form>
         </div>
     );
-    
-    // --- Main Render Logic ---
+
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 min-h-[70vh]">
             

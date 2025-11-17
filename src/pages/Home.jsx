@@ -1,6 +1,4 @@
-// src/pages/Home.jsx (Final version with original structure and AOS)
-
-import React, { useState, useEffect } from 'react'; // 🎯 useRef removed
+import React, { useState, useEffect } from 'react'; 
 import { useNavigate } from 'react-router-dom';
 // Swiper Imports
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -10,21 +8,13 @@ import 'swiper/css/free-mode';
 import 'swiper/css/autoplay';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
-// Swiper Modules (Pagination and Navigation added)
 import { Autoplay, FreeMode, Pagination, Navigation } from 'swiper/modules';
 
-// Lucide-react icons for visual flair
 import { Star, DollarSign, Eye, Users, Search, Calendar, CheckCircle, BookOpen, Sparkles } from 'lucide-react';
 
-// 🎯 AOS Imports and Styles (Local to Home.jsx)
 import AOS from 'aos';
-import 'aos/dist/aos.css'; // AOS styles
+import 'aos/dist/aos.css'; 
 
-
-// ❌ কাস্টম ScrollRevealSection কম্পোনেন্টটি মুছে ফেলা হয়েছে (Was here originally)
-
-
-// --- STATIC DATA: Top Rated Providers ---
 const topProviderData = [
     { id: 1, name: 'Nadia Akhter', skill: 'Advanced React Dev', rating: 4.9, reviews: 150, avatar: 'https://i.pravatar.cc/150?img=47' },
     { id: 2, name: 'Imran Khan', skill: 'Photo Editing', rating: 4.7, reviews: 112, avatar: 'https://i.pravatar.cc/150?img=68' },
@@ -35,22 +25,19 @@ const topProviderData = [
     { id: 6, name: 'Zahid Islam', skill: 'Python Programming', rating: 4.4, reviews: 130, avatar: 'https://i.pravatar.cc/150?img=11' },
 ];
 
-// --- STATIC DATA: How It Works Steps (Updated for Swap theme) ---
 const howItWorksSteps = [
     { id: 1, title: 'Discover Your Need', description: 'Search our library for the specific skill you need to master or exchange a service for.', icon: Search },
     { id: 2, title: 'Connect & Schedule', description: 'Match with a verified provider or peer and schedule your session instantly.', icon: Calendar },
     { id: 3, title: 'Swap Knowledge', description: 'Attend the session, master the skill, and leave a rating for the successful exchange!', icon: CheckCircle },
 ];
 
-
-// 識 Home component now accepts isLoggedIn and loading props
 const Home = ({ isLoggedIn, loading }) => {
-    const navigate = useNavigate(); // Hook for navigation
+    const navigate = useNavigate(); 
     const [skills, setSkills] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // 🎯 Initialize AOS when Home component mounts
+
     useEffect(() => {
         AOS.init({
             duration: 1000, 
@@ -61,7 +48,6 @@ const Home = ({ isLoggedIn, loading }) => {
         };
     }, []); 
 
-    // Fetching data from public/skills.json
     useEffect(() => {
         fetch('/skills.json') 
             .then(response => {
@@ -73,7 +59,7 @@ const Home = ({ isLoggedIn, loading }) => {
             .then(data => {
                 setSkills(data);
                 setIsLoading(false);
-                AOS.refresh(); // Refresh AOS after content loads
+                AOS.refresh(); 
             })
             .catch(err => {
                 setError(err.message);
@@ -81,22 +67,21 @@ const Home = ({ isLoggedIn, loading }) => {
             });
     }, []);
 
-    // 識 HANDLER FOR VIEW DETAILS BUTTON (Protected)
     const handleViewDetails = (skillId) => {
-        // 識 FIX: If authentication state is still loading, block the navigation to prevent false redirect to /login.
+        
         if (loading) return; 
 
         if (isLoggedIn) {
-            navigate(`/skill/${skillId}`); // Go to protected details page
+            navigate(`/skill/${skillId}`); 
         } else {
-            // Save path and redirect to login
+          
             sessionStorage.setItem('redirectPath', `/skill/${skillId}`);
             navigate('/login');
         }
     };
 
     if (isLoading || loading) {
-        // Differentiate loading messages
+   
         if (loading && !isLoading) {
             return <div className="text-center py-20 text-xl font-semibold text-rose-600">Checking user status...</div>;
         }
@@ -109,8 +94,7 @@ const Home = ({ isLoggedIn, loading }) => {
 
     return (
         <div className="py-0 md:py-4">
-            
-            {/* ... 1. HERO SLIDER SECTION ... */}
+        
             <header className="mb-12 pt-4 md:pt-8">
                 <h1 className="text-5xl md:text-7xl font-extrabold text-center pb-6 font-serif">
                     <span 
@@ -152,7 +136,7 @@ const Home = ({ isLoggedIn, loading }) => {
                                     onError={(e) => { e.target.onerror = null; e.target.src = "https://via.placeholder.com/600x400?text="+skill.category; }}
                                 />
                                 
-                                {/* Text Container with Bottom Gradient for contrast */}
+                               
                                 <div className="absolute inset-0 flex items-end p-4 bg-gradient-to-t from-black/70 via-black/20 to-transparent transition duration-300">
                                     <h3 className="text-xl font-bold text-white leading-tight">
                                         {skill.skillName}
@@ -165,11 +149,9 @@ const Home = ({ isLoggedIn, loading }) => {
                 </Swiper>
             </div>
             
-            {/* 2. POPULAR SKILLS SECTION (Cards) - 🎯 Added data-aos */}
-            {/* ❌ ScrollRevealSection wrapper removed */}
             <div 
                 className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10"
-                data-aos="fade-up" // Animation for the whole section
+                data-aos="fade-up" 
             >
                 <h2 className="text-4xl md:text-5xl font-extrabold mb-12 text-center font-serif drop-shadow-lg">
                     <span className="bg-clip-text text-transparent bg-gradient-to-r from-rose-700 to-pink-500 transition duration-500">
@@ -183,7 +165,7 @@ const Home = ({ isLoggedIn, loading }) => {
                             key={skill.skillId} 
                             className="flex flex-col bg-white rounded-xl overflow-hidden shadow-xl border border-rose-100 transform hover:shadow-2xl hover:border-rose-300 hover:-translate-y-1 transition duration-500"
                             data-aos="zoom-in-up" 
-                            data-aos-delay={index * 100} // Staggered animation
+                            data-aos-delay={index * 100} 
                         >
                             {/* Card Image */}
                             <div className="h-40 bg-rose-50 flex items-center justify-center overflow-hidden">
@@ -194,8 +176,7 @@ const Home = ({ isLoggedIn, loading }) => {
                                     onError={(e) => { e.target.onerror = null; e.target.src = "https://via.placeholder.com/400x200?text="+skill.category; }}
                                 />
                             </div>
-                            
-                            {/* Card Content */}
+                           
                             <div className="p-5 flex flex-col flex-grow">
                                 <h3 className="text-xl font-bold text-gray-900 mb-2 truncate" title={skill.skillName}>
                                     {skill.skillName}
@@ -211,7 +192,6 @@ const Home = ({ isLoggedIn, loading }) => {
                                     </span>
                                 </div>
                                 
-                                {/* View Details Button - Calls handleViewDetails */}
                                 <button 
                                     onClick={() => handleViewDetails(skill.skillId)}
                                     className="w-full bg-rose-600 text-white py-2 rounded-lg font-semibold hover:bg-rose-700 transition duration-300 flex items-center justify-center mt-auto transform hover:scale-[1.02] active:scale-95"
@@ -224,11 +204,9 @@ const Home = ({ isLoggedIn, loading }) => {
                 </div>
             </div>
 
-            {/* 3. TOP RATED PROVIDERS SECTION (SWIPER CAROUSEL) - 🎯 Added data-aos */}
-            {/* ❌ ScrollRevealSection wrapper removed */}
             <div 
                 className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20"
-                data-aos="fade-left" // Animation for the whole section
+                data-aos="fade-left" 
             >
                 <h2 className="text-4xl md:text-5xl font-extrabold mb-12 text-center font-serif drop-shadow-lg">
                     <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-rose-700 transition duration-500">
@@ -257,7 +235,7 @@ const Home = ({ isLoggedIn, loading }) => {
                                 <div 
                                     className="bg-white p-6 rounded-xl shadow-lg border-2 border-rose-100 text-center transform hover:shadow-xl hover:border-rose-400 transition duration-500 hover:-translate-y-1"
                                     data-aos="fade-up" 
-                                    data-aos-delay={provider.id * 50} // Subtle stagger on cards inside Swiper
+                                    data-aos-delay={provider.id * 50} 
                                 >
                                     <img 
                                         src={provider.avatar} 
@@ -280,8 +258,7 @@ const Home = ({ isLoggedIn, loading }) => {
                 </div>
             </div>
 
-            {/* 4. HOW IT WORKS SECTION - 🎯 Added data-aos on steps */}
-            {/* ❌ ScrollRevealSection wrapper removed */}
+           
             <div className="max-w-full bg-rose-200 py-20 border-y-4 border-rose-300 shadow-inner">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <h2 className="text-4xl md:text-5xl font-extrabold mb-16 text-center font-serif drop-shadow-lg">
@@ -292,13 +269,13 @@ const Home = ({ isLoggedIn, loading }) => {
                     
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
                         {howItWorksSteps.map(step => {
-                            const Icon = step.icon; // Get the Lucide icon component
+                            const Icon = step.icon; 
                             return (
                                 <div 
                                     key={step.id} 
                                     className="text-center p-8 bg-white rounded-xl shadow-2xl border-2 border-rose-300 transform transition duration-500 hover:scale-[1.02]"
-                                    data-aos="flip-up" // Fun flip animation
-                                    data-aos-delay={step.id * 150} // Staggered animation
+                                    data-aos="flip-up" 
+                                    data-aos-delay={step.id * 150} 
                                 >
                                     <div className="group mx-auto w-16 h-16 mb-4 flex items-center justify-center rounded-full bg-rose-600 text-white shadow-xl transition duration-300 transform hover:rotate-6">
                                         <Icon className="w-8 h-8"/>
@@ -312,11 +289,8 @@ const Home = ({ isLoggedIn, loading }) => {
                 </div>
             </div>
 
-            {/* 5. MODERN CTA SECTION: Ready to Swap Skills? - 🎯 Added data-aos */}
-            {/* ❌ ScrollRevealSection wrapper removed */}
-            {/* Full-width section with a bold background to stand out */}
             <div className="w-full bg-gradient-to-br from-rose-500 to-pink-500 py-24 shadow-2xl relative overflow-hidden">
-                {/* Decorative background elements (Modern touch) */}
+         
                 <div className="absolute inset-0 opacity-10">
                     <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
                         <path d="M0,0 L100,0 L100,100 Q50,80 0,100 L0,0 Z" fill="url(#roseGradient)"></path>
@@ -347,7 +321,7 @@ const Home = ({ isLoggedIn, loading }) => {
                     
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         
-                        {/* CTA 1: I Want to Learn (Clean Card) */}
+                    
                         <div 
                             className="bg-white p-10 rounded-2xl shadow-2xl border-b-8 border-rose-600/70 text-center transform hover:shadow-rose-300/50 transition duration-300 hover:scale-[1.03]"
                             data-aos="zoom-in-right"
@@ -363,7 +337,7 @@ const Home = ({ isLoggedIn, loading }) => {
                             </a>
                         </div>
 
-                        {/* CTA 2: I Want to Teach (Clean Card) */}
+                     
                         <div 
                             className="bg-white p-10 rounded-2xl shadow-2xl border-b-8 border-pink-600/70 text-center transform hover:shadow-pink-300/50 transition duration-300 hover:scale-[1.03]"
                             data-aos="zoom-in-left"
@@ -382,7 +356,7 @@ const Home = ({ isLoggedIn, loading }) => {
                 </div>
             </div>
             
-            {/* Spacer for bottom */}
+          
             <div className="h-10"></div> 
             
         </div>
