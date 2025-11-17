@@ -1,9 +1,11 @@
-// src/pages/SkillDetails.jsx (Clean, Modern Card Design)
+// src/pages/SkillDetails.jsx (Clean, Modern Card Design with AOS Animation)
 
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Star, DollarSign, Mail, User, Clock, CheckCircle, Tag } from 'lucide-react';
 import { notifySuccess } from '../components/Toast'; 
+import AOS from 'aos'; 
+import 'aos/dist/aos.css'; 
 
 const initialFormState = {
     name: '',
@@ -13,11 +15,16 @@ const initialFormState = {
 const SkillDetails = ({ allSkills }) => {
     const { skillId } = useParams();
     const [skill, setSkill] = useState(null);
-    const [formData, setFormData] = useState(initialFormState);
+    // 🎯 FIX: Corrected useState initialization
+    const [formData, setFormData] = useState(initialFormState); 
 
     useEffect(() => {
         const selectedSkill = allSkills.find(s => s.skillId === parseInt(skillId));
         setSkill(selectedSkill);
+        
+        if (selectedSkill) {
+            AOS.refresh(); 
+        }
     }, [skillId, allSkills]);
 
     if (!skill) {
@@ -42,11 +49,19 @@ const SkillDetails = ({ allSkills }) => {
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
             
-            {/* New Main Container - Elevated Card Look with clear separation */}
-            <div className="bg-white rounded-2xl shadow-2xl border border-rose-100 overflow-hidden">
+            {/* New Main Container - AOS fade-in */}
+            <div 
+                className="bg-white rounded-2xl shadow-2xl border border-rose-100 overflow-hidden"
+                data-aos="fade-up" // Main animation for the whole card
+                data-aos-duration="600"
+            >
                 
-                {/* 1. TOP HEADER SECTION (Skill Name & Category) */}
-                <div className="p-6 md:p-10 bg-rose-50 border-b-4 border-rose-300">
+                {/* 1. TOP HEADER SECTION (Skill Name & Category) - AOS fade-down */}
+                <div 
+                    className="p-6 md:p-10 bg-rose-50 border-b-4 border-rose-300"
+                    data-aos="fade-down"
+                    data-aos-delay="100"
+                >
                     <div className="flex items-center text-xl text-rose-700 font-semibold mb-2">
                         <Tag className="w-5 h-5 mr-2" /> {skill.category}
                     </div>
@@ -59,22 +74,30 @@ const SkillDetails = ({ allSkills }) => {
                 {/* 2. MAIN BODY GRID (Details 60% vs. Form 40%) */}
                 <div className="grid grid-cols-1 lg:grid-cols-5 divide-y lg:divide-y-0 lg:divide-x divide-rose-100">
                     
-                    {/* LEFT COLUMN (Details & Image) - 3/5 width */}
+                    {/* LEFT COLUMN (Details & Image) */}
                     <div className="lg:col-span-3 p-8 md:p-10">
                         
-                        {/* Image Card (Cleanly embedded) */}
-                        <div className="w-full h-80 mb-8 rounded-xl overflow-hidden shadow-lg border border-rose-200">
+                        {/* Image Card - AOS zoom-in */}
+                        <div 
+                            className="w-full h-80 mb-8 rounded-xl overflow-hidden shadow-lg border border-rose-200"
+                            data-aos="zoom-in"
+                            data-aos-delay="200"
+                        >
                              <img 
                                 src={skill.image} 
                                 alt={skill.skillName} 
                                 // Image will cover the space, adjusted for better aesthetics
                                 className="w-full h-full object-cover"
-                                onError={(e) => { e.target.onerror = null; e.target.src = `https://via.placeholder.com/800x600?text=${skill.skillName}`; }}
+                                onError={(e) => { e.target.onerror = null; e.target.src = `https://via.placeholder.co/800x600?text=${skill.skillName}`; }}
                             />
                         </div>
 
-                        {/* Key Metrics Row */}
-                        <div className="flex flex-wrap items-center justify-around p-4 mb-8 rounded-lg bg-rose-100/50 shadow-inner">
+                        {/* Key Metrics Row - AOS fade-right */}
+                        <div 
+                            className="flex flex-wrap items-center justify-around p-4 mb-8 rounded-lg bg-rose-100/50 shadow-inner"
+                            data-aos="fade-right"
+                            data-aos-delay="400"
+                        >
                             <div className="text-center">
                                 <p className="text-3xl font-extrabold text-rose-600">
                                     <DollarSign className="w-6 h-6 inline-block mr-1" />{skill.price}
@@ -101,8 +124,12 @@ const SkillDetails = ({ allSkills }) => {
                             {skill.description}
                         </p>
                         
-                        {/* Provider Info Card */}
-                        <div className="mt-8 p-6 bg-rose-100 rounded-xl shadow-md border border-rose-200">
+                        {/* Provider Info Card - AOS fade-up */}
+                        <div 
+                            className="mt-8 p-6 bg-rose-100 rounded-xl shadow-md border border-rose-200"
+                            data-aos="fade-up"
+                            data-aos-delay="600"
+                        >
                             <h3 className="text-xl font-bold text-rose-700 mb-4 font-serif flex items-center">
                                 <User className="w-5 h-5 mr-3" /> Provider Details
                             </h3>
@@ -117,8 +144,12 @@ const SkillDetails = ({ allSkills }) => {
                         </div>
                     </div>
 
-                    {/* RIGHT COLUMN (Booking Form) - 2/5 width */}
-                    <div className="lg:col-span-2 p-8 md:p-10 bg-rose-50">
+                    {/* RIGHT COLUMN (Booking Form) - AOS slide-left */}
+                    <div 
+                        className="lg:col-span-2 p-8 md:p-10 bg-rose-50"
+                        data-aos="fade-left"
+                        data-aos-delay="200"
+                    >
                         <h2 className="text-3xl font-bold text-rose-700 mb-6 font-serif border-b pb-3 border-rose-200">Book Your Session</h2>
                         
                         <form onSubmit={handleSubmit} className="space-y-6">
@@ -152,7 +183,10 @@ const SkillDetails = ({ allSkills }) => {
                             
                             <button
                                 type="submit"
+                                // AOS animation on button
                                 className="w-full bg-rose-600 text-white font-semibold py-3 rounded-lg shadow-lg hover:bg-rose-700 transition duration-300 transform hover:scale-[1.01] active:scale-95 mt-4 flex items-center justify-center"
+                                data-aos="zoom-in"
+                                data-aos-delay="400"
                             >
                                 <CheckCircle className="w-5 h-5 mr-2" /> Confirm Book Session
                             </button>

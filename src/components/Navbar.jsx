@@ -82,10 +82,7 @@ const Navbar = ({ isLoggedIn = false, user = null, onLogout = () => {} }) => {
             <a href="/home" className="text-gray-800 hover:bg-rose-100 hover:text-rose-600 px-3 py-2 rounded-md text-sm font-medium flex items-center transition duration-300">
               <Home className="w-4 h-4 mr-1 transition duration-300" /> Home
             </a>
-            {/* Keeping Contact link as it was present */}
-            <a href="/contact" className="text-gray-800 hover:bg-rose-100 hover:text-rose-600 px-3 py-2 rounded-md text-sm font-medium flex items-center transition duration-300">
-              <Mail className="w-4 h-4 mr-1 transition duration-300" /> Contact
-            </a>
+            
           </div>
             
           {/* Auth/Profile Section (Right) */}
@@ -138,15 +135,8 @@ const Navbar = ({ isLoggedIn = false, user = null, onLogout = () => {} }) => {
              <a href="/home" className="text-gray-800 hover:bg-rose-100 hover:text-rose-600 block px-3 py-2 rounded-md text-base font-medium flex items-center transition duration-300">
                 <Home className="w-4 h-4 mr-2" /> Home
               </a>
-              {/* Added back About link to mobile menu */}
-              <a href="/about" className="text-gray-800 hover:bg-rose-100 hover:text-rose-600 block px-3 py-2 rounded-md text-base font-medium flex items-center transition duration-300">
-                <Info className="w-4 h-4 mr-2" /> About
-              </a>
-              <a href="/contact" className="text-gray-800 hover:bg-rose-100 hover:text-rose-600 block px-3 py-2 rounded-md text-base font-medium flex items-center transition duration-300">
-                <Mail className="w-4 h-4 mr-2" /> Contact
-              </a>
+             
               
-              {/* Auth Buttons/Links for Mobile View */}
               {isLoggedIn ? (
                   <>
                       <a href="/profile" className="text-gray-800 hover:bg-rose-100 hover:text-rose-600 block px-3 py-2 rounded-md text-base font-medium flex items-center transition duration-300">
