@@ -1,8 +1,8 @@
-// src/pages/Signup.jsx
+// src/pages/Signup.jsx (Password Toggle Implemented)
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Mail, Lock, User, Link, UserPlus } from 'lucide-react';
+import { Mail, Lock, User, Link, UserPlus, Eye, EyeOff } from 'lucide-react'; // 🎯 Added Eye, EyeOff
 import { signInWithPopup, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'; 
 import { auth, googleProvider } from '../firebase'; 
 import { notifySuccess, notifyError } from '../components/Toast'; 
@@ -28,6 +28,8 @@ const Signup = () => {
     const [password, setPassword] = useState('');
     const [passwordError, setPasswordError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    // 🎯 New State for Password Toggle
+    const [showPassword, setShowPassword] = useState(false);
 
     // --- Helper function for navigation after successful event ---
     const handleSuccessfulEvent = () => {
@@ -137,17 +139,27 @@ const Signup = () => {
                         />
                     </div>
 
-                    {/* Password Field */}
+                    {/* Password Field (Modified for Toggle) */}
                     <div className="relative">
                         <Lock className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                         <input
-                            type="password"
+                            // 🎯 Dynamic type based on showPassword state
+                            type={showPassword ? "text" : "password"}
                             placeholder="Password (Min 6 chars, Upper/Lower)"
                             value={password}
                             onChange={handlePasswordChange}
                             required
-                            className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-rose-500 focus:border-rose-500 transition duration-150 ${passwordError ? 'border-red-500' : 'border-rose-300'}`}
+                            className={`w-full pl-10 pr-10 py-3 border rounded-lg focus:ring-rose-500 focus:border-rose-500 transition duration-150 ${passwordError ? 'border-red-500' : 'border-rose-300'}`}
                         />
+                         {/* 🎯 Toggle Button */}
+                        <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-rose-500 p-1"
+                            title={showPassword ? "Hide password" : "Show password"}
+                        >
+                            {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                        </button>
                     </div>
                     
                     {/* Password Error Message */}

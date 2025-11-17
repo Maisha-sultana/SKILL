@@ -1,10 +1,10 @@
-// src/pages/Login.jsx
+// src/pages/Login.jsx (Password Toggle Implemented)
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signInWithPopup, signInWithEmailAndPassword } from 'firebase/auth'; 
 import { auth, googleProvider } from '../firebase'; 
-import { LogIn, Mail, Lock, Globe } from 'lucide-react'; 
+import { LogIn, Mail, Lock, Globe, Eye, EyeOff } from 'lucide-react'; // 🎯 Added Eye, EyeOff
 import { notifySuccess, notifyError } from '../components/Toast'; 
 
 const Login = ({ isLoggedIn }) => {
@@ -12,6 +12,8 @@ const Login = ({ isLoggedIn }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    // 🎯 New State for Password Toggle
+    const [showPassword, setShowPassword] = useState(false); 
 
     // Synchronously check if the user is already logged in.
     if (isLoggedIn) {
@@ -30,7 +32,6 @@ const Login = ({ isLoggedIn }) => {
     // --- Handler for Forgot Password link (Passes email state) ---
     const handleForgetPasswordClick = (e) => {
         e.preventDefault();
-        // Use navigate with state to pass the current email value
         navigate('/forget-password', { state: { email: email } });
     };
 
@@ -44,7 +45,6 @@ const Login = ({ isLoggedIn }) => {
 
         setIsLoading(true);
         try {
-            // Logs in using Firebase Email/Password
             await signInWithEmailAndPassword(auth, email, password);
             handleSuccessfulLogin();
         } catch (error) {
@@ -90,24 +90,34 @@ const Login = ({ isLoggedIn }) => {
                         />
                     </div>
 
-                    {/* Password Field */}
+                    {/* Password Field (Modified for Toggle) */}
                     <div className="relative">
                         <Lock className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                         <input
-                            type="password"
+                            // 🎯 Dynamic type based on showPassword state
+                            type={showPassword ? "text" : "password"}
                             placeholder="Password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
-                            className="w-full pl-10 pr-4 py-3 border border-rose-300 rounded-lg focus:ring-rose-500 focus:border-rose-500 transition duration-150"
+                            className="w-full pl-10 pr-10 py-3 border border-rose-300 rounded-lg focus:ring-rose-500 focus:border-rose-500 transition duration-150"
                         />
+                         {/* 🎯 Toggle Button */}
+                        <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-rose-500 p-1"
+                            title={showPassword ? "Hide password" : "Show password"}
+                        >
+                            {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                        </button>
                     </div>
                     
                     {/* Forget Password Link */}
                     <div className="flex justify-end text-sm">
                         <a 
                             href="/forget-password" 
-                            onClick={handleForgetPasswordClick} // 🎯 Uses handler to pass state
+                            onClick={handleForgetPasswordClick} 
                             className="text-rose-600 hover:text-rose-800 transition duration-300"
                         >
                             Forgot Password?
