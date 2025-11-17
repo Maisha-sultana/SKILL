@@ -1,18 +1,18 @@
-// src/components/Footer.jsx
+
 
 import React from 'react';
 import { Mail, Phone, MapPin, Facebook, Twitter, Linkedin, Youtube } from 'lucide-react';
 
 const Footer = () => {
   return (
-    // Removed fixed bottom-0, h-[...] classes. Added w-full and mt-auto.
+   
     <footer className="w-full  mt-auto bg-rose-200 border-t border-rose-300 shadow-lg p-4 md:p-6 lg:p-8 text-gray-800 transition duration-300 ease-in-out hover:shadow-2xl hover:border-rose-500">
       <div className="max-w-7xl mx-auto mb-8"> 
         
-        {/* Footer Content Grid */}
+       
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
           
-          {/* 1. Contact Info */}
+          
           <div className="col-span-2 md:col-span-1">
             <h3 className="text-base font-semibold mb-2 text-rose-700">Contact</h3>
             <ul className="space-y-1 text-gray-700">
@@ -31,7 +31,7 @@ const Footer = () => {
             </ul>
           </div>
           
-          {/* 2. Legal & Policy */}
+      
           <div className="col-span-2 md:col-span-1">
             <h3 className="text-base font-semibold mb-2 text-rose-700">Legal & Policy</h3>
             <ul className="space-y-1 text-gray-700">
@@ -41,7 +41,7 @@ const Footer = () => {
             </ul>
           </div>
           
-          {/* 3. Quick Links */}
+       
           <div className="hidden md:block col-span-1">
             <h3 className="text-base font-semibold mb-2 text-rose-700">Quick Links</h3>
             <ul className="space-y-1 text-gray-700">
@@ -51,7 +51,7 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* 4. Social Links */}
+          
           <div className="col-span-2 md:col-span-1">
             <h3 className="text-base font-semibold mb-2 text-rose-700">Follow Us</h3>
             <div className="flex space-x-4">

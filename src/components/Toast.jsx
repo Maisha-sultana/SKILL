@@ -1,8 +1,5 @@
-// src/components/Toast.jsx (Using react-toastify)
-
 import { toast } from 'react-toastify'; 
-// Note: We assume 'react-toastify' is installed. 
-// The ToastContainer component needs to be added to App.jsx.
+
 
 export const notifySuccess = (message) => {
     toast.success(message, {

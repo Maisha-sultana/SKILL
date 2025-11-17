@@ -1,32 +1,29 @@
-// src/components/Navbar.jsx (Updated to use Profile Dropdown)
 
 import React, { useState } from 'react';
 import { LogIn, User, Menu, X, Home, Info, Mail, LogOut, UserCircle } from 'lucide-react'; 
 
-// 🎯 FIX: Rely entirely on props (isLoggedIn, user, onLogout)
+
 const Navbar = ({ isLoggedIn = false, user = null, onLogout = () => {} }) => {
   
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  // 🎯 New State: Controls the profile dropdown visibility
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false); 
   
   const effectiveUser = user || { displayName: 'User', photoURL: 'https://i.pravatar.cc/150?img=1' };
   
   const logoText = "SkillSwap"; 
 
-  // This calls the handleLogout function passed from App.jsx
   const handleLogout = () => {
     onLogout(); 
-    setIsProfileDropdownOpen(false); // Close dropdown on logout
+    setIsProfileDropdownOpen(false); 
   };
   
   const UserProfileAvatar = () => (
     <div 
       className="relative flex items-center h-full transition duration-300 cursor-pointer"
-      // Toggle dropdown on click
+
       onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
     >
-      {/* Avatar Image/Icon */}
+   
       {effectiveUser.photoURL ? (
         <img 
           className="h-9 w-9 rounded-full object-cover border-2 border-rose-500 transition duration-300 transform hover:scale-110" 
@@ -38,7 +35,7 @@ const Navbar = ({ isLoggedIn = false, user = null, onLogout = () => {} }) => {
         <UserCircle className="h-9 w-9 text-rose-500 transition duration-300 transform hover:scale-110" title={`Click to open menu`} />
       )}
 
-      {/* 🎯 Dropdown Menu */}
+   
       {isProfileDropdownOpen && (
         <div className="absolute top-full right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-1 z-50 border border-rose-200 transition duration-300">
           <div className="px-4 py-2 text-sm text-gray-700 font-semibold border-b border-rose-100 truncate">
@@ -48,7 +45,7 @@ const Navbar = ({ isLoggedIn = false, user = null, onLogout = () => {} }) => {
           <a
             href="/profile"
             className="w-full text-left flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-rose-100 transition duration-150"
-            onClick={() => setIsProfileDropdownOpen(false)} // Close on navigation
+            onClick={() => setIsProfileDropdownOpen(false)} 
           >
             <User className="w-4 h-4 mr-2 text-rose-500" /> My Profile
           </a>
@@ -77,7 +74,6 @@ const Navbar = ({ isLoggedIn = false, user = null, onLogout = () => {} }) => {
             </a>
           </div>
 
-          {/* Navigation Links (Center) - Removed About link as it wasn't requested */}
           <div className="hidden sm:flex flex-grow justify-center space-x-2 md:space-x-4 transition duration-300">
             <a href="/home" className="text-gray-800 hover:bg-rose-100 hover:text-rose-600 px-3 py-2 rounded-md text-sm font-medium flex items-center transition duration-300">
               <Home className="w-4 h-4 mr-1 transition duration-300" /> Home
@@ -89,10 +85,10 @@ const Navbar = ({ isLoggedIn = false, user = null, onLogout = () => {} }) => {
           <div className="hidden sm:flex flex-shrink-0 items-center space-x-3 transition duration-300">
             
             {isLoggedIn ? ( 
-              <UserProfileAvatar /> // Only the dropdown Avatar is shown when logged in
+              <UserProfileAvatar /> 
             ) : (
               <>
-                {/* Shows Login/Signup when false */}
+      
                 <a
                   href="/login"
                   className="flex items-center text-rose-600 hover:text-white hover:bg-rose-500 font-semibold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 active:scale-95 border border-rose-500"
@@ -110,7 +106,7 @@ const Navbar = ({ isLoggedIn = false, user = null, onLogout = () => {} }) => {
 
           </div>
           
-          {/* ... Mobile Menu Logic (using isLoggedIn prop) ... */}
+ 
           <div className="-mr-2 flex sm:hidden">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -128,7 +124,6 @@ const Navbar = ({ isLoggedIn = false, user = null, onLogout = () => {} }) => {
         </div>
       </div>
 
-      {/* মোবাইল মেনু ড্রপডাউন (Mobile Menu Items) */}
       {isMenuOpen && (
         <div className="sm:hidden bg-white border-t border-rose-200 transition duration-300" id="mobile-menu">
           <div className="px-2 pt-2 pb-3 space-y-1">
@@ -142,7 +137,7 @@ const Navbar = ({ isLoggedIn = false, user = null, onLogout = () => {} }) => {
                       <a href="/profile" className="text-gray-800 hover:bg-rose-100 hover:text-rose-600 block px-3 py-2 rounded-md text-base font-medium flex items-center transition duration-300">
                           <User className="w-4 h-4 mr-2" /> My Profile
                       </a>
-                      {/* Logout button in mobile menu */}
+                    
                       <button onClick={handleLogout} className="w-full text-left flex items-center bg-rose-500 hover:bg-rose-600 text-white font-semibold py-2 px-3 rounded-md transition duration-300 ease-in-out">
                           <LogOut className="w-5 h-5 mr-2" /> Logout
                       </button>
