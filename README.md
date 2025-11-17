@@ -17,6 +17,8 @@ SkillSwap is a modern, single-page web application designed to be a dynamic mark
 
 ##  Tech Stack & Used Packages (npm)
 
+## Live link- https://skillswap-3ba4e.web.app
+
 The project is built on the **React** framework and uses **Firebase** for authentication and backend services.
 
 ## | Category | Package Name | Used For |
