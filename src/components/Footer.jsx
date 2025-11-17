@@ -6,7 +6,7 @@ import { Mail, Phone, MapPin, Facebook, Twitter, Linkedin, Youtube } from 'lucid
 const Footer = () => {
   return (
     // Removed fixed bottom-0, h-[...] classes. Added w-full and mt-auto.
-    <footer className="w-full h-50 mt-auto bg-rose-200 border-t border-rose-300 shadow-lg p-4 md:p-6 lg:p-8 text-gray-800 transition duration-300 ease-in-out hover:shadow-2xl hover:border-rose-500">
+    <footer className="w-full  mt-auto bg-rose-200 border-t border-rose-300 shadow-lg p-4 md:p-6 lg:p-8 text-gray-800 transition duration-300 ease-in-out hover:shadow-2xl hover:border-rose-500">
       <div className="max-w-7xl mx-auto mb-8"> 
         
         {/* Footer Content Grid */}
