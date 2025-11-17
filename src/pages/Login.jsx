@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signInWithPopup, signInWithEmailAndPassword } from 'firebase/auth'; 
 import { auth, googleProvider } from '../firebase'; 
-import { LogIn, Mail, Lock, Globe } from 'lucide-react'; // 🎯 Added Globe icon
+import { LogIn, Mail, Lock, Globe } from 'lucide-react'; 
 import { notifySuccess, notifyError } from '../components/Toast'; 
 
 const Login = ({ isLoggedIn }) => {
@@ -25,6 +25,13 @@ const Login = ({ isLoggedIn }) => {
         sessionStorage.removeItem('redirectPath');
         notifySuccess("Successfully logged in!");
         navigate(redirectPath, { replace: true });
+    };
+    
+    // --- Handler for Forgot Password link (Passes email state) ---
+    const handleForgetPasswordClick = (e) => {
+        e.preventDefault();
+        // Use navigate with state to pass the current email value
+        navigate('/forget-password', { state: { email: email } });
     };
 
     // --- 1. Traditional Email/Password Sign-In Function ---
@@ -98,7 +105,11 @@ const Login = ({ isLoggedIn }) => {
                     
                     {/* Forget Password Link */}
                     <div className="flex justify-end text-sm">
-                        <a href="/forget-password" className="text-rose-600 hover:text-rose-800 transition duration-300">
+                        <a 
+                            href="/forget-password" 
+                            onClick={handleForgetPasswordClick} // 🎯 Uses handler to pass state
+                            className="text-rose-600 hover:text-rose-800 transition duration-300"
+                        >
                             Forgot Password?
                         </a>
                     </div>

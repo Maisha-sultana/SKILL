@@ -22,6 +22,7 @@ const ProtectedRoute = React.lazy(() => import('./components/ProtectedRoute'));
 const Signup = React.lazy(() => import('./pages/Signup')); 
 // 🎯 New: Import Profile page
 const Profile = React.lazy(() => import('./pages/Profile')); 
+const ForgotPassword = React.lazy(() => import("./pages/ForgotPassword"));
 
 
 // --- DUMMY/FETCHED SKILL DATA (Used for SkillDetails Page) ---
@@ -89,6 +90,8 @@ function AppContent() {
                         <Route path="/signup" element={<Signup />} /> 
                         <Route path="/about" element={<About />} />
                         <Route path="/contact" element={<Contact />} />
+
+                        <Route path="/forget-password" element={<ForgotPassword />} />
                         
                         {/* Protected Skill Details Page */}
                         <Route 
